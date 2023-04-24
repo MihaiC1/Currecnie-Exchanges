@@ -1,99 +1,92 @@
 package com.hcl.currencyexchange.entity;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Date;
 
 
 @Entity
-@Table(name = "Exchanges")
+@Table(name = "currency_conversion")
 public class Exchanges {
     @Id
-    private int id; // Unique identifier for every record
+    private int CCN_ID; // Unique identifier for every record
     @Column
-    private LocalDate date = LocalDate.now(); // The date when the transaction was made
+    private Date CCN_DATE = Date.from(Instant.now()); // The date when the transaction was made
     @Column
-    private String fromCurrency; //Currency to be converted
+    private int CCN_CUR_ID_FROM; //The ID for Currency to be converted
     @Column
-    private String toCurrency; //Currency to convert to
+    private int CCN_CUR_ID_TO; //The ID for Currency to convert to
 
     @Column
-    private float initialValue; // Amount to be exchanged
-    @Column
-    private float finalValue; // Calculated amount after the exchange
+    private float CCN_RATE; // Exchanging rate
 
     public Exchanges() {
     }
 
-    public Exchanges(int id, String fromCurrency, String toCurrency, float initialValue) {
-        this.id = id;
-        this.fromCurrency = fromCurrency;
-        this.toCurrency = toCurrency;
-        this.initialValue = initialValue;
-
-    }
-    public Exchanges(int id, String fromCurrency, String toCurrency) {
-        this.id = id;
-        this.fromCurrency = fromCurrency;
-        this.toCurrency = toCurrency;
+    public Exchanges(int CCN_ID, Date CCN_DATE, int CCN_CUR_ID_FROM, int CCN_CUR_ID_TO, float CCN_RATE) {
+        this.CCN_ID = CCN_ID;
+        this.CCN_DATE = CCN_DATE;
+        this.CCN_CUR_ID_FROM = CCN_CUR_ID_FROM;
+        this.CCN_CUR_ID_TO = CCN_CUR_ID_TO;
+        this.CCN_RATE = CCN_RATE;
     }
 
-    public String getFromCurrency() {
-        return fromCurrency;
+    public Exchanges(int CCN_CUR_ID_FROM, int CCN_CUR_ID_TO) {
+
+        this.CCN_CUR_ID_FROM = CCN_CUR_ID_FROM;
+        this.CCN_CUR_ID_TO = CCN_CUR_ID_TO;
+
     }
 
-    public void setFromCurrency(String fromCurrency) {
-        this.fromCurrency = fromCurrency;
+    public int getCCN_ID() {
+        return CCN_ID;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public void setCCN_ID(int CCN_ID) {
+        this.CCN_ID = CCN_ID;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public Date getCCN_DATE() {
+        return CCN_DATE;
     }
 
-    public String getToCurrency() {
-        return toCurrency;
+    public void setCCN_DATE(Date CCN_DATE) {
+        this.CCN_DATE = CCN_DATE;
     }
 
-    public void setToCurrency(String toCurrency) {
-        this.toCurrency = toCurrency;
+    public int getCCN_CUR_ID_FROM() {
+        return CCN_CUR_ID_FROM;
     }
 
-    public float getInitialValue() {
-        return initialValue;
+    public void setCCN_CUR_ID_FROM(int CCN_CUR_ID_FROM) {
+        this.CCN_CUR_ID_FROM = CCN_CUR_ID_FROM;
     }
 
-    public void setInitialValue(float initialValue) {
-        this.initialValue = initialValue;
+    public int getCCN_CUR_ID_TO() {
+        return CCN_CUR_ID_TO;
     }
 
-    public float getFinalValue() {
-        return finalValue;
+    public void setCCN_CUR_ID_TO(int CCN_CUR_ID_TO) {
+        this.CCN_CUR_ID_TO = CCN_CUR_ID_TO;
     }
 
-    public void setFinalValue(float finalValue) {
-        this.finalValue = finalValue;
+    public float getCCN_RATE() {
+        return CCN_RATE;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setCCN_RATE(float CCN_RATE) {
+        this.CCN_RATE = CCN_RATE;
     }
 
     @Override
     public String toString() {
         return "Exchanges{" +
-                "id=" + id +
-                ", date=" + date +
-                ", fromCurrency='" + fromCurrency + '\'' +
-                ", toCurrency='" + toCurrency + '\'' +
-                ", initialValue=" + initialValue +
-                ", finalValue=" + finalValue +
-                "}\n";
+                "CCN_ID=" + CCN_ID +
+                ", CCN_DATE=" + CCN_DATE +
+                ", CCN_CUR_ID_FROM=" + CCN_CUR_ID_FROM +
+                ", CCN_CUR_ID_TO=" + CCN_CUR_ID_TO +
+                ", CCN_RATE=" + CCN_RATE +
+                '}';
     }
 }
