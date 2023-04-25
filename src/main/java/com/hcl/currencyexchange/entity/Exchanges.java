@@ -10,83 +10,91 @@ import java.util.Date;
 @Table(name = "currency_conversion")
 public class Exchanges {
     @Id
-    private int CCN_ID; // Unique identifier for every record
-    @Column
-    private Date CCN_DATE = Date.from(Instant.now()); // The date when the transaction was made
-    @Column
-    private int CCN_CUR_ID_FROM; //The ID for Currency to be converted
-    @Column
-    private int CCN_CUR_ID_TO; //The ID for Currency to convert to
+    @Column(name = "CCN_ID")
+    private int ID; // Unique identifier for every record
+    @Column(name = "CCN_DATE")
+    private LocalDate date; // The date when the transaction was made
+    @Column(name = "CCN_CUR_ID_FROM")
+    private int curIdFrom; //The ID for Currency to be converted
+    @Column(name = "CCN_CUR_ID_TO")
+    private int curIdTo; //The ID for Currency to convert to
 
-    @Column
-    private float CCN_RATE; // Exchanging rate
+    @Column(name = "CCN_RATE")
+    private float rate; // Exchanging rate
 
     public Exchanges() {
     }
 
-    public Exchanges(int CCN_ID, Date CCN_DATE, int CCN_CUR_ID_FROM, int CCN_CUR_ID_TO, float CCN_RATE) {
-        this.CCN_ID = CCN_ID;
-        this.CCN_DATE = CCN_DATE;
-        this.CCN_CUR_ID_FROM = CCN_CUR_ID_FROM;
-        this.CCN_CUR_ID_TO = CCN_CUR_ID_TO;
-        this.CCN_RATE = CCN_RATE;
+    public Exchanges(int ID, LocalDate date, int curIdFrom, int curIdTo, float rate) {
+        this.ID = ID;
+        this.date = date;
+        this.curIdFrom = curIdFrom;
+        this.curIdTo = curIdTo;
+        this.rate = rate;
+    }
+    public Exchanges( LocalDate date, int curIdFrom, int curIdTo, float rate) {
+
+        this.date = date;
+        this.curIdFrom = curIdFrom;
+        this.curIdTo = curIdTo;
+        this.rate = rate;
     }
 
-    public Exchanges(int CCN_CUR_ID_FROM, int CCN_CUR_ID_TO) {
+    public Exchanges(int curIdFrom, int curIdTo) {
 
-        this.CCN_CUR_ID_FROM = CCN_CUR_ID_FROM;
-        this.CCN_CUR_ID_TO = CCN_CUR_ID_TO;
+        this.curIdFrom = curIdFrom;
+        this.curIdTo = curIdTo;
 
     }
 
-    public int getCCN_ID() {
-        return CCN_ID;
+    public int getID() {
+        return ID;
     }
 
-    public void setCCN_ID(int CCN_ID) {
-        this.CCN_ID = CCN_ID;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
-    public Date getCCN_DATE() {
-        return CCN_DATE;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setCCN_DATE(Date CCN_DATE) {
-        this.CCN_DATE = CCN_DATE;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    public int getCCN_CUR_ID_FROM() {
-        return CCN_CUR_ID_FROM;
+    public int getCurIdFrom() {
+        return curIdFrom;
     }
 
-    public void setCCN_CUR_ID_FROM(int CCN_CUR_ID_FROM) {
-        this.CCN_CUR_ID_FROM = CCN_CUR_ID_FROM;
+    public void setCurIdFrom(int curIdFrom) {
+        this.curIdFrom = curIdFrom;
     }
 
-    public int getCCN_CUR_ID_TO() {
-        return CCN_CUR_ID_TO;
+    public int getCurIdTo() {
+        return curIdTo;
     }
 
-    public void setCCN_CUR_ID_TO(int CCN_CUR_ID_TO) {
-        this.CCN_CUR_ID_TO = CCN_CUR_ID_TO;
+    public void setCurIdTo(int curIdTo) {
+        this.curIdTo = curIdTo;
     }
 
-    public float getCCN_RATE() {
-        return CCN_RATE;
+    public float getRate() {
+        return rate;
     }
 
-    public void setCCN_RATE(float CCN_RATE) {
-        this.CCN_RATE = CCN_RATE;
+    public void setRate(float rate) {
+        this.rate = rate;
     }
 
     @Override
     public String toString() {
         return "Exchanges{" +
-                "CCN_ID=" + CCN_ID +
-                ", CCN_DATE=" + CCN_DATE +
-                ", CCN_CUR_ID_FROM=" + CCN_CUR_ID_FROM +
-                ", CCN_CUR_ID_TO=" + CCN_CUR_ID_TO +
-                ", CCN_RATE=" + CCN_RATE +
+                "CCN_ID=" + ID +
+                ", CCN_DATE=" + date +
+                ", CCN_CUR_ID_FROM=" + curIdFrom +
+                ", CCN_CUR_ID_TO=" + curIdTo +
+                ", CCN_RATE=" + rate +
                 '}';
     }
 }

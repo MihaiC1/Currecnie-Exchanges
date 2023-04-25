@@ -6,65 +6,65 @@ import javax.persistence.*;
 @Table(name = "currency")
 public class Currencies {
     @Id
-    @Column
+    @Column(name = "CUR_ID")
     @GeneratedValue
-    private int CUR_ID;
-    @Column
-    private String CUR_NAME; //name of a currency;
-    @Column
-    private String CUR_ISO_CODE;
-    @Column
-    private String CUR_CODE_FOR_WEB;
+    private int curID;
+    @Column(name = "CUR_NAME")
+    private String curName; //name of a currency;
+    @Column(name = "CUR_ISO_CODE")
+    private String curIsoCode;
+    @Column(name = "CUR_CODE_FOR_WEB")
+    private String curCodeForWeb;
 
     public Currencies() {
     }
 
-    public Currencies(int CUR_ID, String CUR_NAME, String CUR_ISO_CODE, String CUR_CODE_FOR_WEB) {
-        this.CUR_ID = CUR_ID;
-        this.CUR_NAME = CUR_NAME;
-        this.CUR_ISO_CODE = CUR_ISO_CODE;
-        this.CUR_CODE_FOR_WEB = CUR_CODE_FOR_WEB;
+    public Currencies(int curID, String curName, String curIsoCode, String curCodeForWeb) {
+        this.curID = curID;
+        this.curName = curName;
+        this.curIsoCode = curIsoCode;
+        this.curCodeForWeb = curCodeForWeb;
     }
 
-    public int getCUR_ID() {
-        return CUR_ID;
+    public int getCurID() {
+        return curID;
     }
 
-    public void setCUR_ID(int CUR_ID) {
-        this.CUR_ID = CUR_ID;
+    public void setCurID(int curID) {
+        this.curID = curID;
     }
 
-    public String getCUR_NAME() {
-        return CUR_NAME;
+    public String getCurName() {
+        return curName;
     }
 
-    public void setCUR_NAME(String CUR_NAME) {
-        this.CUR_NAME = CUR_NAME;
+    public void setCurName(String curName) {
+        this.curName = curName;
     }
 
-    public String getCUR_ISO_CODE() {
-        return CUR_ISO_CODE;
+    public String getCurIsoCode() {
+        return curIsoCode;
     }
 
-    public void setCUR_ISO_CODE(String CUR_ISO_CODE) {
-        this.CUR_ISO_CODE = CUR_ISO_CODE;
+    public void setCurIsoCode(String curIsoCode) {
+        this.curIsoCode = curIsoCode;
     }
 
-    public String getCUR_CODE_FOR_WEB() {
-        return CUR_CODE_FOR_WEB;
+    public String getCurCodeForWeb() {
+        return curCodeForWeb;
     }
 
-    public void setCUR_CODE_FOR_WEB(String CUR_CODE_FOR_WEB) {
-        this.CUR_CODE_FOR_WEB = CUR_CODE_FOR_WEB;
+    public void setCurCodeForWeb(String curCodeForWeb) {
+        this.curCodeForWeb = curCodeForWeb;
     }
 
     @Override
     public String toString() {
         return "Currencies{" +
-                "CUR_ID=" + CUR_ID +
-                ", CUR_NAME='" + CUR_NAME + '\'' +
-                ", CUR_ISO_CODE='" + CUR_ISO_CODE + '\'' +
-                ", CUR_CODE_FOR_WEB='" + CUR_CODE_FOR_WEB + '\'' +
+                "CUR_ID=" + curID +
+                ", CUR_NAME='" + curName + '\'' +
+                ", CUR_ISO_CODE='" + curIsoCode + '\'' +
+                ", CUR_CODE_FOR_WEB='" + curCodeForWeb + '\'' +
                 '}';
     }
 }

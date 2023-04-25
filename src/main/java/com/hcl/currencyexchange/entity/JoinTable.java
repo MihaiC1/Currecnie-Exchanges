@@ -1,20 +1,33 @@
 package com.hcl.currencyexchange.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class JoinTable {
     int ID;
-    String currency_to;
-    String currency_from;
-    Date date;
+    String currencyTo;
+    String currencyFrom;
+    LocalDate date;
     float rate;
 
-    public JoinTable(int ID, Date date, float rate, String currency_to, String currency_from) {
+
+    public JoinTable(int ID, LocalDate date, float rate, String currencyTo, String currencyFrom) {
         this.ID = ID;
-        this.currency_to = currency_to;
-        this.currency_from = currency_from;
+        this.currencyTo = currencyTo;
+        this.currencyFrom = currencyFrom;
         this.date = date;
         this.rate = rate;
+    }
+
+    @Override
+    public String toString() {
+        return "JoinTable{" +
+                "ID=" + ID +
+                ", currency_to='" + currencyTo + '\'' +
+                ", currency_from='" + currencyFrom + '\'' +
+                ", date=" + date +
+                ", rate=" + rate +
+                '}';
     }
 
     public int getID() {
@@ -25,27 +38,27 @@ public class JoinTable {
         this.ID = ID;
     }
 
-    public String getCurrency_to() {
-        return currency_to;
+    public String getCurrencyTo() {
+        return currencyTo;
     }
 
-    public void setCurrency_to(String currency_to) {
-        this.currency_to = currency_to;
+    public void setCurrencyTo(String currencyTo) {
+        this.currencyTo = currencyTo;
     }
 
-    public String getCurrency_from() {
-        return currency_from;
+    public String getCurrencyFrom() {
+        return currencyFrom;
     }
 
-    public void setCurrency_from(String currency_from) {
-        this.currency_from = currency_from;
+    public void setCurrencyFrom(String currencyFrom) {
+        this.currencyFrom = currencyFrom;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

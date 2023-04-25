@@ -6,23 +6,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
-
+@Transactional
 @Repository
 public interface CurrenciesRepository extends JpaRepository<Currencies, Integer> {
 
     @Query("select c from Currencies c")
     List<Currencies> getAll();
 
-    //Return a list of the available records based on the abbreviation
-    @Query("select c from Currencies c where CUR_ID = ?1")
-    Currencies getById(int id);
-
-    @Query("select c.CUR_ISO_CODE from Currencies c where CUR_ID = ?1")
-    String getISOById(int id);
-
-    @Query("select c.CUR_ID from Currencies c where CUR_ISO_CODE = ?1")
+    @Query("select c.curID from Currencies c where curIsoCode = ?1")
     int getIDByISO(String ISO);
+    @Query("select c from Currencies c where curIsoCode = ?1")
+    Currencies getByISO(String ISO);
 
 
 
