@@ -1,0 +1,312 @@
+2023-04-27T10:34:51,400 INFO  StartupInfoLogger:55 -[{}] Starting CurrencyExchangeApplication using Java 19.0.2 on MihaiPC with PID 9488 (D:\Currency exchange\target\classes started by mihai.dumitrascu99 in D:\Currency exchange)
+2023-04-27T10:34:51,401 INFO  SpringApplication:631 -[{}] No active profile set, falling back to 1 default profile: "default"
+2023-04-27T10:34:51,455 INFO  RepositoryConfigurationDelegate:132 -[{}] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-27T10:34:51,463 INFO  RepositoryConfigurationDelegate:201 -[{}] Finished Spring Data repository scanning in 7 ms. Found 2 JPA repository interfaces.
+2023-04-27T10:34:51,516 INFO  TomcatWebServer:108 -[{}] Tomcat initialized with port(s): 8080 (http)
+2023-04-27T10:34:51,517 INFO  DirectJDKLog:173 -[{}] Starting service [Tomcat]
+2023-04-27T10:34:51,517 INFO  DirectJDKLog:173 -[{}] Starting Servlet engine: [Apache Tomcat/9.0.73]
+2023-04-27T10:34:51,532 INFO  DirectJDKLog:173 -[{}] Initializing Spring embedded WebApplicationContext
+2023-04-27T10:34:51,532 INFO  ServletWebServerApplicationContext:292 -[{}] Root WebApplicationContext: initialization completed in 130 ms
+2023-04-27T10:34:51,544 WARN  HikariConfig:1042 -[{}] Pool1 - maxLifetime is less than 30000ms, setting to default 1800000ms.
+2023-04-27T10:34:51,544 WARN  HikariConfig:1092 -[{}] Pool1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2023-04-27T10:34:51,545 INFO  HikariDataSource:110 -[{}] Pool1 - Starting...
+2023-04-27T10:34:51,553 INFO  HikariDataSource:123 -[{}] Pool1 - Start completed.
+2023-04-27T10:34:51,555 INFO  LogHelper:31 -[{}] HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-27T10:34:51,557 INFO  Dialect:175 -[{}] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2023-04-27T10:34:51,573 INFO  JtaPlatformInitiator:52 -[{}] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-27T10:34:51,573 INFO  AbstractEntityManagerFactoryBean:437 -[{}] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27T10:34:51,648 WARN  JpaBaseConfiguration$JpaWebConfiguration:223 -[{}] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-04-27T10:34:51,698 INFO  OptionalLiveReloadServer:59 -[{}] LiveReload server is running on port 35729
+2023-04-27T10:34:51,705 INFO  TomcatWebServer:220 -[{}] Tomcat started on port(s): 8080 (http) with context path ''
+2023-04-27T10:34:51,707 INFO  StartupInfoLogger:61 -[{}] Started CurrencyExchangeApplication in 0.328 seconds (JVM running for 4558.441)
+2023-04-27T10:34:51,708 INFO  ConditionEvaluationDeltaLoggingListener:63 -[{}] Condition evaluation unchanged
+2023-04-27T10:34:58,921 INFO  DirectJDKLog:173 -[{}] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-04-27T10:34:58,921 INFO  FrameworkServlet:525 -[{}] Initializing Servlet 'dispatcherServlet'
+2023-04-27T10:34:58,921 INFO  FrameworkServlet:547 -[{}] Completed initialization in 0 ms
+2023-04-27T10:34:58,923 INFO  Controller:210 -[{}] 
+Input: 
+date: 2023-04-10
+fromCurrency: RON
+
+2023-04-27T10:34:58,933 INFO  Controller:217 -[{}] Response: OK
+2023-04-27T10:36:19,736 DEBUG Controller:163 -[{}] DATA RETRIEVED
+2023-04-27T10:37:29,678 INFO  LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener:211 -[{}] Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2023-04-27T10:37:29,691 INFO  DirectJDKLog:173 -[{}] Stopping service [Tomcat]
+2023-04-27T10:37:29,691 INFO  DirectJDKLog:173 -[{}] Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-04-27T10:37:29,695 INFO  AbstractEntityManagerFactoryBean:651 -[{}] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27T10:37:29,696 INFO  HikariDataSource:350 -[{}] Pool1 - Shutdown initiated...
+2023-04-27T10:37:29,701 INFO  HikariDataSource:352 -[{}] Pool1 - Shutdown completed.
+2023-04-27T10:37:29,809 INFO  StartupInfoLogger:55 -[{}] Starting CurrencyExchangeApplication using Java 19.0.2 on MihaiPC with PID 9488 (D:\Currency exchange\target\classes started by mihai.dumitrascu99 in D:\Currency exchange)
+2023-04-27T10:37:29,809 INFO  SpringApplication:631 -[{}] No active profile set, falling back to 1 default profile: "default"
+2023-04-27T10:37:29,895 INFO  RepositoryConfigurationDelegate:132 -[{}] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-27T10:37:29,904 INFO  RepositoryConfigurationDelegate:201 -[{}] Finished Spring Data repository scanning in 8 ms. Found 2 JPA repository interfaces.
+2023-04-27T10:37:29,957 INFO  TomcatWebServer:108 -[{}] Tomcat initialized with port(s): 8080 (http)
+2023-04-27T10:37:29,958 INFO  DirectJDKLog:173 -[{}] Starting service [Tomcat]
+2023-04-27T10:37:29,958 INFO  DirectJDKLog:173 -[{}] Starting Servlet engine: [Apache Tomcat/9.0.73]
+2023-04-27T10:37:29,976 INFO  DirectJDKLog:173 -[{}] Initializing Spring embedded WebApplicationContext
+2023-04-27T10:37:29,977 INFO  ServletWebServerApplicationContext:292 -[{}] Root WebApplicationContext: initialization completed in 165 ms
+2023-04-27T10:37:29,994 WARN  HikariConfig:1042 -[{}] Pool1 - maxLifetime is less than 30000ms, setting to default 1800000ms.
+2023-04-27T10:37:29,995 WARN  HikariConfig:1092 -[{}] Pool1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2023-04-27T10:37:29,995 INFO  HikariDataSource:110 -[{}] Pool1 - Starting...
+2023-04-27T10:37:30,004 INFO  HikariDataSource:123 -[{}] Pool1 - Start completed.
+2023-04-27T10:37:30,006 INFO  LogHelper:31 -[{}] HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-27T10:37:30,009 INFO  Dialect:175 -[{}] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2023-04-27T10:37:30,026 INFO  JtaPlatformInitiator:52 -[{}] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-27T10:37:30,027 INFO  AbstractEntityManagerFactoryBean:437 -[{}] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27T10:37:30,038 WARN  JpaBaseConfiguration$JpaWebConfiguration:223 -[{}] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-04-27T10:37:30,141 INFO  OptionalLiveReloadServer:59 -[{}] LiveReload server is running on port 35729
+2023-04-27T10:37:30,147 INFO  TomcatWebServer:220 -[{}] Tomcat started on port(s): 8080 (http) with context path ''
+2023-04-27T10:37:30,150 INFO  StartupInfoLogger:61 -[{}] Started CurrencyExchangeApplication in 0.374 seconds (JVM running for 4716.884)
+2023-04-27T10:37:30,152 INFO  ConditionEvaluationDeltaLoggingListener:58 -[{}] Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+   JpaRepositoriesAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.data.jpa.repository.JpaRepository' (OnClassCondition)
+      - @ConditionalOnProperty (spring.data.jpa.repositories.enabled=true) matched (OnPropertyCondition)
+      - @ConditionalOnBean (types: javax.sql.DataSource; SearchStrategy: all) found bean 'dataSource'; @ConditionalOnMissingBean (types: org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean,org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+
+Negative matches:
+-----------------
+
+   JpaRepositoriesAutoConfiguration#entityManagerFactoryBootstrapExecutorCustomizer:
+      Did not match:
+         - AnyNestedCondition 0 matched 2 did not; NestedCondition on JpaRepositoriesAutoConfiguration.BootstrapExecutorCondition.LazyBootstrapMode @ConditionalOnProperty (spring.data.jpa.repositories.bootstrap-mode=lazy) did not find property 'bootstrap-mode'; NestedCondition on JpaRepositoriesAutoConfiguration.BootstrapExecutorCondition.DeferredBootstrapMode @ConditionalOnProperty (spring.data.jpa.repositories.bootstrap-mode=deferred) did not find property 'bootstrap-mode' (JpaRepositoriesAutoConfiguration.BootstrapExecutorCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2023-04-27T10:37:31,574 INFO  LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener:211 -[{}] Restarting due to 1 class path change (1 addition, 0 deletions, 0 modifications)
+2023-04-27T10:37:31,581 INFO  DirectJDKLog:173 -[{}] Stopping service [Tomcat]
+2023-04-27T10:37:31,584 INFO  AbstractEntityManagerFactoryBean:651 -[{}] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27T10:37:31,584 INFO  HikariDataSource:350 -[{}] Pool1 - Shutdown initiated...
+2023-04-27T10:37:31,586 INFO  HikariDataSource:352 -[{}] Pool1 - Shutdown completed.
+2023-04-27T10:37:31,664 INFO  StartupInfoLogger:55 -[{}] Starting CurrencyExchangeApplication using Java 19.0.2 on MihaiPC with PID 9488 (D:\Currency exchange\target\classes started by mihai.dumitrascu99 in D:\Currency exchange)
+2023-04-27T10:37:31,665 INFO  SpringApplication:631 -[{}] No active profile set, falling back to 1 default profile: "default"
+2023-04-27T10:37:31,711 INFO  RepositoryConfigurationDelegate:132 -[{}] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-27T10:37:31,715 INFO  RepositoryConfigurationDelegate:201 -[{}] Finished Spring Data repository scanning in 3 ms. Found 2 JPA repository interfaces.
+2023-04-27T10:37:31,752 INFO  TomcatWebServer:108 -[{}] Tomcat initialized with port(s): 8080 (http)
+2023-04-27T10:37:31,753 INFO  DirectJDKLog:173 -[{}] Starting service [Tomcat]
+2023-04-27T10:37:31,753 INFO  DirectJDKLog:173 -[{}] Starting Servlet engine: [Apache Tomcat/9.0.73]
+2023-04-27T10:37:31,765 INFO  DirectJDKLog:173 -[{}] Initializing Spring embedded WebApplicationContext
+2023-04-27T10:37:31,765 INFO  ServletWebServerApplicationContext:292 -[{}] Root WebApplicationContext: initialization completed in 100 ms
+2023-04-27T10:37:31,774 WARN  HikariConfig:1042 -[{}] Pool1 - maxLifetime is less than 30000ms, setting to default 1800000ms.
+2023-04-27T10:37:31,774 WARN  HikariConfig:1092 -[{}] Pool1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2023-04-27T10:37:31,775 INFO  HikariDataSource:110 -[{}] Pool1 - Starting...
+2023-04-27T10:37:31,781 INFO  HikariDataSource:123 -[{}] Pool1 - Start completed.
+2023-04-27T10:37:31,783 INFO  LogHelper:31 -[{}] HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-27T10:37:31,785 INFO  Dialect:175 -[{}] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2023-04-27T10:37:31,797 INFO  JtaPlatformInitiator:52 -[{}] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-27T10:37:31,798 INFO  AbstractEntityManagerFactoryBean:437 -[{}] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27T10:37:31,852 WARN  JpaBaseConfiguration$JpaWebConfiguration:223 -[{}] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-04-27T10:37:31,886 INFO  OptionalLiveReloadServer:59 -[{}] LiveReload server is running on port 35729
+2023-04-27T10:37:31,892 INFO  TomcatWebServer:220 -[{}] Tomcat started on port(s): 8080 (http) with context path ''
+2023-04-27T10:37:31,895 INFO  StartupInfoLogger:61 -[{}] Started CurrencyExchangeApplication in 0.25 seconds (JVM running for 4718.629)
+2023-04-27T10:37:31,896 INFO  ConditionEvaluationDeltaLoggingListener:58 -[{}] Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+    None
+
+
+Negative matches:
+-----------------
+
+   JpaRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean,org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension; SearchStrategy: all) found beans of type 'org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean' &exchangeRepository, &currenciesRepository and found beans of type 'org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension' org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension#0 (OnBeanCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.data.jpa.repository.JpaRepository' (OnClassCondition)
+         - @ConditionalOnProperty (spring.data.jpa.repositories.enabled=true) matched (OnPropertyCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2023-04-27T10:38:11,737 INFO  DirectJDKLog:173 -[{}] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-04-27T10:38:11,737 INFO  FrameworkServlet:525 -[{}] Initializing Servlet 'dispatcherServlet'
+2023-04-27T10:38:11,737 INFO  FrameworkServlet:547 -[{}] Completed initialization in 0 ms
+2023-04-27T10:38:11,740 INFO  Controller:178 -[{}] 
+Input: 
+date: 2023-04-26
+2023-04-27T10:38:11,746 INFO  Controller:184 -[{}] Response: OK
+2023-04-27T10:38:15,297 INFO  Controller:178 -[{}] 
+Input: 
+date: 2023-04-25
+2023-04-27T10:38:15,300 INFO  Controller:184 -[{}] Response: OK
+2023-04-27T10:39:49,658 INFO  LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener:211 -[{}] Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2023-04-27T10:39:49,668 INFO  DirectJDKLog:173 -[{}] Stopping service [Tomcat]
+2023-04-27T10:39:49,669 INFO  DirectJDKLog:173 -[{}] Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-04-27T10:39:49,672 INFO  AbstractEntityManagerFactoryBean:651 -[{}] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27T10:39:49,672 INFO  HikariDataSource:350 -[{}] Pool1 - Shutdown initiated...
+2023-04-27T10:39:49,676 INFO  HikariDataSource:352 -[{}] Pool1 - Shutdown completed.
+2023-04-27T10:39:49,770 INFO  StartupInfoLogger:55 -[{}] Starting CurrencyExchangeApplication using Java 19.0.2 on MihaiPC with PID 9488 (D:\Currency exchange\target\classes started by mihai.dumitrascu99 in D:\Currency exchange)
+2023-04-27T10:39:49,770 INFO  SpringApplication:631 -[{}] No active profile set, falling back to 1 default profile: "default"
+2023-04-27T10:39:49,866 INFO  RepositoryConfigurationDelegate:132 -[{}] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-27T10:39:49,875 INFO  RepositoryConfigurationDelegate:201 -[{}] Finished Spring Data repository scanning in 7 ms. Found 2 JPA repository interfaces.
+2023-04-27T10:39:49,936 INFO  TomcatWebServer:108 -[{}] Tomcat initialized with port(s): 8080 (http)
+2023-04-27T10:39:49,938 INFO  DirectJDKLog:173 -[{}] Starting service [Tomcat]
+2023-04-27T10:39:49,938 INFO  DirectJDKLog:173 -[{}] Starting Servlet engine: [Apache Tomcat/9.0.73]
+2023-04-27T10:39:49,960 INFO  DirectJDKLog:173 -[{}] Initializing Spring embedded WebApplicationContext
+2023-04-27T10:39:49,960 INFO  ServletWebServerApplicationContext:292 -[{}] Root WebApplicationContext: initialization completed in 188 ms
+2023-04-27T10:39:49,980 WARN  HikariConfig:1042 -[{}] Pool1 - maxLifetime is less than 30000ms, setting to default 1800000ms.
+2023-04-27T10:39:49,980 WARN  HikariConfig:1092 -[{}] Pool1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2023-04-27T10:39:49,981 INFO  HikariDataSource:110 -[{}] Pool1 - Starting...
+2023-04-27T10:39:49,992 INFO  HikariDataSource:123 -[{}] Pool1 - Start completed.
+2023-04-27T10:39:49,995 INFO  LogHelper:31 -[{}] HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-27T10:39:49,998 INFO  Dialect:175 -[{}] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2023-04-27T10:39:50,017 INFO  JtaPlatformInitiator:52 -[{}] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-27T10:39:50,017 INFO  AbstractEntityManagerFactoryBean:437 -[{}] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27T10:39:50,031 WARN  JpaBaseConfiguration$JpaWebConfiguration:223 -[{}] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-04-27T10:39:50,154 INFO  OptionalLiveReloadServer:59 -[{}] LiveReload server is running on port 35729
+2023-04-27T10:39:50,162 INFO  TomcatWebServer:220 -[{}] Tomcat started on port(s): 8080 (http) with context path ''
+2023-04-27T10:39:50,164 INFO  StartupInfoLogger:61 -[{}] Started CurrencyExchangeApplication in 0.423 seconds (JVM running for 4856.898)
+2023-04-27T10:39:50,165 INFO  ConditionEvaluationDeltaLoggingListener:58 -[{}] Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+   JpaRepositoriesAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.data.jpa.repository.JpaRepository' (OnClassCondition)
+      - @ConditionalOnProperty (spring.data.jpa.repositories.enabled=true) matched (OnPropertyCondition)
+      - @ConditionalOnBean (types: javax.sql.DataSource; SearchStrategy: all) found bean 'dataSource'; @ConditionalOnMissingBean (types: org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean,org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+
+Negative matches:
+-----------------
+
+   JpaRepositoriesAutoConfiguration#entityManagerFactoryBootstrapExecutorCustomizer:
+      Did not match:
+         - AnyNestedCondition 0 matched 2 did not; NestedCondition on JpaRepositoriesAutoConfiguration.BootstrapExecutorCondition.LazyBootstrapMode @ConditionalOnProperty (spring.data.jpa.repositories.bootstrap-mode=lazy) did not find property 'bootstrap-mode'; NestedCondition on JpaRepositoriesAutoConfiguration.BootstrapExecutorCondition.DeferredBootstrapMode @ConditionalOnProperty (spring.data.jpa.repositories.bootstrap-mode=deferred) did not find property 'bootstrap-mode' (JpaRepositoriesAutoConfiguration.BootstrapExecutorCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2023-04-27T10:39:51,571 INFO  LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener:211 -[{}] Restarting due to 1 class path change (1 addition, 0 deletions, 0 modifications)
+2023-04-27T10:39:51,581 INFO  DirectJDKLog:173 -[{}] Stopping service [Tomcat]
+2023-04-27T10:39:51,584 INFO  AbstractEntityManagerFactoryBean:651 -[{}] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27T10:39:51,584 INFO  HikariDataSource:350 -[{}] Pool1 - Shutdown initiated...
+2023-04-27T10:39:51,588 INFO  HikariDataSource:352 -[{}] Pool1 - Shutdown completed.
+2023-04-27T10:39:51,673 INFO  StartupInfoLogger:55 -[{}] Starting CurrencyExchangeApplication using Java 19.0.2 on MihaiPC with PID 9488 (D:\Currency exchange\target\classes started by mihai.dumitrascu99 in D:\Currency exchange)
+2023-04-27T10:39:51,673 INFO  SpringApplication:631 -[{}] No active profile set, falling back to 1 default profile: "default"
+2023-04-27T10:39:51,733 INFO  RepositoryConfigurationDelegate:132 -[{}] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-27T10:39:51,741 INFO  RepositoryConfigurationDelegate:201 -[{}] Finished Spring Data repository scanning in 6 ms. Found 2 JPA repository interfaces.
+2023-04-27T10:39:51,801 INFO  TomcatWebServer:108 -[{}] Tomcat initialized with port(s): 8080 (http)
+2023-04-27T10:39:51,802 INFO  DirectJDKLog:173 -[{}] Starting service [Tomcat]
+2023-04-27T10:39:51,802 INFO  DirectJDKLog:173 -[{}] Starting Servlet engine: [Apache Tomcat/9.0.73]
+2023-04-27T10:39:51,821 INFO  DirectJDKLog:173 -[{}] Initializing Spring embedded WebApplicationContext
+2023-04-27T10:39:51,821 INFO  ServletWebServerApplicationContext:292 -[{}] Root WebApplicationContext: initialization completed in 146 ms
+2023-04-27T10:39:51,842 WARN  HikariConfig:1042 -[{}] Pool1 - maxLifetime is less than 30000ms, setting to default 1800000ms.
+2023-04-27T10:39:51,842 WARN  HikariConfig:1092 -[{}] Pool1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2023-04-27T10:39:51,842 INFO  HikariDataSource:110 -[{}] Pool1 - Starting...
+2023-04-27T10:39:51,852 INFO  HikariDataSource:123 -[{}] Pool1 - Start completed.
+2023-04-27T10:39:51,854 INFO  LogHelper:31 -[{}] HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-27T10:39:51,858 INFO  Dialect:175 -[{}] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2023-04-27T10:39:51,875 INFO  JtaPlatformInitiator:52 -[{}] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-27T10:39:51,875 INFO  AbstractEntityManagerFactoryBean:437 -[{}] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27T10:39:51,934 WARN  JpaBaseConfiguration$JpaWebConfiguration:223 -[{}] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-04-27T10:39:51,970 INFO  OptionalLiveReloadServer:59 -[{}] LiveReload server is running on port 35729
+2023-04-27T10:39:51,977 INFO  TomcatWebServer:220 -[{}] Tomcat started on port(s): 8080 (http) with context path ''
+2023-04-27T10:39:51,980 INFO  StartupInfoLogger:61 -[{}] Started CurrencyExchangeApplication in 0.33 seconds (JVM running for 4858.713)
+2023-04-27T10:39:51,981 INFO  ConditionEvaluationDeltaLoggingListener:58 -[{}] Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+    None
+
+
+Negative matches:
+-----------------
+
+   JpaRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean,org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension; SearchStrategy: all) found beans of type 'org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean' &exchangeRepository, &currenciesRepository and found beans of type 'org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension' org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension#0 (OnBeanCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.data.jpa.repository.JpaRepository' (OnClassCondition)
+         - @ConditionalOnProperty (spring.data.jpa.repositories.enabled=true) matched (OnPropertyCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2023-04-27T10:39:59,100 INFO  DirectJDKLog:173 -[{}] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-04-27T10:39:59,100 INFO  FrameworkServlet:525 -[{}] Initializing Servlet 'dispatcherServlet'
+2023-04-27T10:39:59,100 INFO  FrameworkServlet:547 -[{}] Completed initialization in 0 ms
+2023-04-27T10:39:59,102 INFO  Controller:178 -[{}] 
+Input: 
+date: 2023-04-26
+2023-04-27T10:39:59,104 INFO  Controller:188 -[{}] Response: OK. No exchanges found on 2023-04-26
+2023-04-27T10:52:17,034 INFO  Controller:178 -[{}] 
+Input: 
+date: 2023-04-26
+2023-04-27T10:52:17,038 INFO  Controller:188 -[{}] Response: OK. No exchanges found on 2023-04-26

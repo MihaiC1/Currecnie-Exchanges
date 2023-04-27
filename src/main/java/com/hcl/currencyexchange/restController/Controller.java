@@ -32,10 +32,14 @@ public class Controller {
     CurrenciesRepository currenciesRepositoryObj;
     private static final Logger LOG = LogManager.getLogger(Controller.class);
 
+    //TODO PRINT LOG INAINTE DE MANIPULAREA DATELOR SI INAINTE DE FIECARE OUTPUT
+    // LOGUL DE INCEPUT CONTINE VARIABILELE INTRODUSE
+    // LOGUL DE SFARSIT CONTINE ACELASI LUCRU CA SI RETURN-UL
     @RequestMapping(value = "/exchange/v1/greeting", method = RequestMethod.GET)
     public ResponseEntity<Object> greeting()
     {
         try {
+
             return new ResponseEntity<>("Welcome to the Currency exchange!!",
                     HttpStatus.OK);
         } catch (Exception e) {
@@ -51,47 +55,44 @@ public class Controller {
                                                @RequestParam("Rate") Float rate)
     {
         try {
-            boolean isValidDate = GenericValidator.isDate(date,"yyyy-MM-dd",true);
-            Currencies curFromObj = currenciesRepositoryObj.getByISO(curFrom);
-            Currencies curToObj = currenciesRepositoryObj.getByISO(curTo);
+            LOG.info("\nInput:\n Date: " + date + "\nCurrencyFrom: " + curFrom + "\nCurrencyTo: " + curTo + "\nExchange rate: " + rate);
             int idForCurFrom = 0;
             int idForCurTo = 0;
-            if (curFromObj != null && curToObj != null){
-                idForCurFrom = currenciesRepositoryObj.getIDByISO(curFrom);
-                idForCurTo = currenciesRepositoryObj.getIDByISO(curTo);
-            }
+            Currencies curFromObj = currenciesRepositoryObj.getByISO(curFrom);
+            idForCurFrom = currenciesRepositoryObj.getIDByISO(curFrom);
+            Currencies curToObj = currenciesRepositoryObj.getByISO(curTo);
+            idForCurTo = currenciesRepositoryObj.getIDByISO(curTo);
 
-            if ( isValidDate && idForCurFrom > 0 && idForCurTo > 0 && rate > 0)
-            {
-                DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDate localDate = LocalDate.parse(date, dateFormat);
-                exchangeRepositoryObj.insertExchanges(localDate, idForCurFrom, idForCurTo, rate);
-                Exchanges addedObj = new Exchanges(localDate, idForCurFrom, idForCurTo, rate);
-                Map<String, Object> response = new HashMap<>();
+            if (!(GenericValidator.isDate(date,"yyyy-MM-dd",true))) {
+                LOG.error("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data added!");
+                return new ResponseEntity<>(new FinalResponse("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data added!"), HttpStatus.BAD_REQUEST);
+            }
+            if (curFromObj == null){
+                    LOG.error(curFrom + " is not available for exchanging! No data added!");
+                    return new ResponseEntity<>(new FinalResponse(curFrom + " is not available for exchanging! No data added!"),HttpStatus.BAD_REQUEST);
+                }
+                    if (curToObj == null) {
+                        LOG.error(curTo + " is not available for exchanging! No data added!");
+                        return new ResponseEntity<>(new FinalResponse(curTo + " is not available for exchanging! No data added!"), HttpStatus.BAD_REQUEST);
+                    }
+                        if (rate <= 0) {
+                            LOG.error("The rate cannot be less then, or equal to 0! No data added!");
+                            return new ResponseEntity<>(new FinalResponse("The rate cannot be less then, or equal to 0! No data added!"), HttpStatus.BAD_REQUEST);
+                        }
 
-                response.put("response","OK");
 
-                return new ResponseEntity<>(response,HttpStatus.OK);
-            }
-            else if (!isValidDate)
-            {
-                return new ResponseEntity<>(new FinalResponse("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data added!"),HttpStatus.BAD_REQUEST);
-            }
-            else if (idForCurFrom <= 0)
-            {
-                return new ResponseEntity<>(new FinalResponse(curFrom + " is not available for exchanging! No data added!"),HttpStatus.BAD_REQUEST);
-            }
-            else if (idForCurTo <= 0)
-            {
-                return new ResponseEntity<>(new FinalResponse(curTo + " is not available for exchanging! No data added!"),HttpStatus.BAD_REQUEST);
-            }
-            else if (rate < 0){
-                return new ResponseEntity<>(new FinalResponse("The rate cannot be less then, or equal to 0! No data added!"),HttpStatus.BAD_REQUEST);
-            }
-            else {
-                return new ResponseEntity<>(new FinalResponse("No data added!"),HttpStatus.BAD_REQUEST);
-            }
+
+
+
+            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(date, dateFormat);
+            exchangeRepositoryObj.insertExchanges(localDate, idForCurFrom, idForCurTo, rate);
+            Map<String, Object> response = new HashMap<>();
+            response.put("response", "OK");
+            LOG.info("Response: OK");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
+            LOG.error("Error stack trace: ",e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
@@ -108,44 +109,44 @@ public class Controller {
     {
 
         try {
-            boolean isValidDate = GenericValidator.isDate(date,"yyyy-MM-dd",true);
-            Currencies curFromObj = currenciesRepositoryObj.getByISO(curFrom);
-            Currencies curToObj = currenciesRepositoryObj.getByISO(curTo);
-            int idForCurFrom = 0;
-            int idForCurTo = 0;
-            if (curFromObj != null && curToObj != null){
-                idForCurFrom = currenciesRepositoryObj.getIDByISO(curFrom);
-                idForCurTo = currenciesRepositoryObj.getIDByISO(curTo);
+            LOG.info("\nInput:\n Date: " + date + "\nCurrencyFrom: " + curFrom + "\nCurrencyTo: " + curTo + "\nExchange rate: " + rate);
+            if (GenericValidator.isDate(date,"yyyy-MM-dd",true)){
+                Currencies curFromObj = currenciesRepositoryObj.getByISO(curFrom);
+                if (curFromObj != null){
+                    Currencies curToObj = currenciesRepositoryObj.getByISO(curTo);
+                    if (curToObj != null){
+                        if (rate > 0){
+                            DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                            LocalDate localDate = LocalDate.parse(date, dateFormat);
+                            exchangeRepositoryObj.updateRecord(rate,localDate, curFrom,curTo);
+                            Map<String, Object> response = new HashMap<>();
+                            response.put("response","OK");
+                            LOG.info("Response: OK");
+                            return new ResponseEntity<>(response,HttpStatus.OK);
+                        }
+                        else{
+                            LOG.error("The rate cannot be less then, or equal to 0! No data updated!");
+                            return new ResponseEntity<>(new FinalResponse("The rate cannot be less then, or equal to 0! No data updated!"),HttpStatus.BAD_REQUEST);
+                        }
+                    }
+                    else{
+                        LOG.error(curTo + " is not available for exchanging! No data updated!");
+                        return new ResponseEntity<>(new FinalResponse(curTo + " is not available for exchanging! No data updated!"),HttpStatus.BAD_REQUEST);
+                    }
+                }
+                else{
+                    LOG.error(curFrom + " is not available for exchanging! No data updated!");
+                    return new ResponseEntity<>(new FinalResponse(curFrom + " is not available for exchanging! No data updated!"),HttpStatus.BAD_REQUEST);
+                }
             }
-            if (isValidDate && idForCurFrom > 0 && idForCurTo > 0 && rate > 0)
-            {
-                DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDate localDate = LocalDate.parse(date, dateFormat);
-                exchangeRepositoryObj.updateRecord(rate,localDate, curFrom,curTo);
-                Exchanges updatedObj = new Exchanges(localDate,idForCurFrom, idForCurTo,rate);
-                return new ResponseEntity<>(new FinalResponse("OK", updatedObj), HttpStatus.OK);
+            else{
+                LOG.error("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data updated!");
+                return new ResponseEntity<>(new FinalResponse("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data updated!"),HttpStatus.BAD_REQUEST);
+
             }
-            else if (!isValidDate)
-            {
-                return new ResponseEntity<>(new FinalResponse("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data added!"),HttpStatus.BAD_REQUEST);
-            }
-            else if (idForCurFrom <= 0)
-            {
-                return new ResponseEntity<>(new FinalResponse(curFrom + " is not available for exchanging! No data added!"),HttpStatus.BAD_REQUEST);
-            }
-            else if (idForCurTo <= 0)
-            {
-                return new ResponseEntity<>(new FinalResponse(curTo + " is not available for exchanging! No data added!"),HttpStatus.BAD_REQUEST);
-            }
-            else if (rate < 0)
-            {
-                return new ResponseEntity<>(new FinalResponse("The rate cannot be less then, or equal to 0! No data added!"),HttpStatus.BAD_REQUEST);
-            }
-            else
-            {
-                return new ResponseEntity<>(new FinalResponse("Invalid input. Nothing updated! "), HttpStatus.BAD_REQUEST);
-            }
+
         } catch (Exception e) {
+            LOG.error(e.getStackTrace());
             return new ResponseEntity<>(new FinalResponse(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -159,6 +160,7 @@ public class Controller {
             LOG.info("DATA RETRIEVED");
             return new ResponseEntity<Object>(result, HttpStatus.OK);
         } catch (Exception e) {
+            LOG.error(e.getStackTrace());
             return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -170,21 +172,29 @@ public class Controller {
     {
 
         try {
-            boolean isValidDate = GenericValidator.isDate(date,"yyyy-MM-dd",true);
-
+            LOG.info("\nInput: \ndate: " + date);
             List<JoinTable> exchangesFromDate;
-            if (isValidDate){
+            if (GenericValidator.isDate(date,"yyyy-MM-dd",true)){
                 DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate localDate = LocalDate.parse(date, dateFormat);
                 exchangesFromDate = exchangeRepositoryObj.findByDate(localDate);
+                if (exchangesFromDate.size() > 0){
+                    LOG.info("Response: OK");
+                }
+                else{
+                    LOG.info("Response: OK. No exchanges found on " + date);
+                }
+
                 return new ResponseEntity<Object>(exchangesFromDate, HttpStatus.OK);
             }
             else {
+                LOG.error("Invalid date format! The accepted format is: YYYY-MM-DD");
                 return new ResponseEntity<Object>("Invalid date format! The accepted format is: YYYY-MM-DD", HttpStatus.BAD_REQUEST);
 
             }
 
         } catch (Exception e) {
+            LOG.error(e.getStackTrace());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
@@ -199,30 +209,31 @@ public class Controller {
     {
 
         try {
-            boolean isValidDate = GenericValidator.isDate(date,"yyyy-MM-dd",true);
-            Currencies curFromObj = currenciesRepositoryObj.getByISO(curFrom);
+            List<JoinTable> result;
+            LOG.info("\nInput: \n" + "date: " + date + "\n" + "fromCurrency: " + curFrom + "\n");
+            if (GenericValidator.isDate(date,"yyyy-MM-dd",true)){
+                Currencies curFromObj = currenciesRepositoryObj.getByISO(curFrom);
+                if (curFromObj != null){
+                        DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        LocalDate localDate = LocalDate.parse(date, dateFormat);
+                        result = exchangeRepositoryObj.getFromDateAndCurr(localDate, curFrom);
+                        LOG.info("Response: OK");
+                        return new ResponseEntity<Object>(new FinalResponse("OK", result), HttpStatus.OK);
 
-            List<JoinTable> result = new ArrayList<>();
-
-            if (isValidDate && curFromObj != null) {
-
-                DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDate localDate = LocalDate.parse(date, dateFormat);
-                result = exchangeRepositoryObj.getFromDateAndCurr(localDate, curFrom);
-                return new ResponseEntity<>(result, HttpStatus.OK);
+                }
+                else{
+                    LOG.error(curFrom + " is not available for exchanging!\n No data displayed!");
+                    return new ResponseEntity<>(new FinalResponse(curFrom + " is not available for exchanging!\n No data displayed!"),HttpStatus.BAD_REQUEST);
+                }
             }
-            else if (!isValidDate){
-                return new ResponseEntity<>(new FinalResponse("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data displayed!"),HttpStatus.BAD_REQUEST);
-            }
-            else if (curFromObj == null){
-                return new ResponseEntity<>(new FinalResponse(curFrom + " is not available for exchanging! No data displayed!"),HttpStatus.BAD_REQUEST);
-            }
-            else {
-                return new ResponseEntity<>(result, HttpStatus.OK);
+            else{
+                LOG.error("The data is not in the correct format. The accepted format is: YYYY-MM-DD! \n No data displayed!");
+                return new ResponseEntity<>(new FinalResponse("The data is not in the correct format. The accepted format is: YYYY-MM-DD! \n No data displayed!"),HttpStatus.BAD_REQUEST);
             }
 
 
         } catch (Exception e) {
+            LOG.error(e.getStackTrace());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
@@ -235,32 +246,38 @@ public class Controller {
     {
 
         try {
-            boolean isValidDate = GenericValidator.isDate(date,"yyyy-MM-dd",true);
-            Currencies curFromObj = currenciesRepositoryObj.getByISO(curFrom);
-            Currencies curToObj = currenciesRepositoryObj.getByISO(curTo);
             JoinTable result;
-            if ( isValidDate && curFromObj != null && curToObj != null) {
-                DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDate localDate = LocalDate.parse(date, dateFormat);
-                result = exchangeRepositoryObj.getFromDateAndCurr(localDate, curFrom, curTo);
-
-                return new ResponseEntity<Object>(new FinalResponse("OK", result), HttpStatus.OK);
+            LOG.info("\nInput: \n" + "date: " + date + "\n" + "fromCurrency: " + curFrom + "\n"+ "toCurrency: " + curTo);
+            if (GenericValidator.isDate(date,"yyyy-MM-dd",true)){
+                Currencies curFromObj = currenciesRepositoryObj.getByISO(curFrom);
+                if (curFromObj != null){
+                    Currencies curToObj = currenciesRepositoryObj.getByISO(curTo);
+                    if (curToObj != null){
+                        DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        LocalDate localDate = LocalDate.parse(date, dateFormat);
+                        result = exchangeRepositoryObj.getFromDateAndCurr(localDate, curFrom, curTo);
+                        LOG.info("Response: OK");
+                        return new ResponseEntity<Object>(new FinalResponse("OK", result), HttpStatus.OK);
+                    }
+                    else{
+                        LOG.error(curTo + " is not available for exchanging!\n No data displayed!");
+                        return new ResponseEntity<>(new FinalResponse(curTo + " is not available for exchanging!\n No data displayed!"),HttpStatus.BAD_REQUEST);
+                    }
+                }
+                else{
+                    LOG.error(curFrom + " is not available for exchanging!\n No data displayed!");
+                    return new ResponseEntity<>(new FinalResponse(curFrom + " is not available for exchanging!\n No data displayed!"),HttpStatus.BAD_REQUEST);
+                }
             }
-            else if (!isValidDate){
+            else{
+                LOG.error("The data is not in the correct format. The accepted format is: YYYY-MM-DD! \n No data displayed!");
                 return new ResponseEntity<>(new FinalResponse("The data is not in the correct format. The accepted format is: YYYY-MM-DD! \n No data displayed!"),HttpStatus.BAD_REQUEST);
             }
-            else if (curFromObj == null){
-                return new ResponseEntity<>(new FinalResponse(curFrom + " is not available for exchanging!\n No data displayed!"),HttpStatus.BAD_REQUEST);
-            }
-            else if (curToObj == null){
-                return new ResponseEntity<>(new FinalResponse(curTo + " is not available for exchanging!\n No data displayed!"),HttpStatus.BAD_REQUEST);
-            }
-            else {
-                return new ResponseEntity<Object>(new FinalResponse("Nothing to display!"), HttpStatus.OK);
-            }
+
 
 
         } catch (Exception e) {
+            LOG.error(e.getStackTrace());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

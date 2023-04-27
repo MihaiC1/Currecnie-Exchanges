@@ -1,18 +1,16 @@
 package com.hcl.currencyexchange.repository;
-import ch.qos.logback.core.encoder.EchoEncoder;
+
 import com.hcl.currencyexchange.entity.Exchanges;
 import com.hcl.currencyexchange.entity.JoinTable;
-import org.hibernate.mapping.Join;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+
+
 @Transactional
 @Repository
 public interface ExchangeRepository extends JpaRepository<Exchanges,Integer> {
