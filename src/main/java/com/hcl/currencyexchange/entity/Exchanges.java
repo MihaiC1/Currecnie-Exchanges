@@ -3,6 +3,7 @@ package com.hcl.currencyexchange.entity;
 import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -22,22 +23,28 @@ public class Exchanges {
     @Column(name = "CCN_RATE")
     private float rate; // Exchanging rate
 
+    @Column(name = "CCN_INSERT_TIME")
+    private LocalDateTime insertTime;
+
+
     public Exchanges() {
     }
 
-    public Exchanges(int ID, LocalDate date, int curIdFrom, int curIdTo, float rate) {
+    public Exchanges(int ID, LocalDate date, int curIdFrom, int curIdTo, float rate, LocalDateTime insertTime) {
         this.ID = ID;
         this.date = date;
         this.curIdFrom = curIdFrom;
         this.curIdTo = curIdTo;
         this.rate = rate;
+        this.insertTime = insertTime;
     }
-    public Exchanges( LocalDate date, int curIdFrom, int curIdTo, float rate) {
+    public Exchanges(LocalDate date, int curIdFrom, int curIdTo, float rate, LocalDateTime insertTime) {
 
         this.date = date;
         this.curIdFrom = curIdFrom;
         this.curIdTo = curIdTo;
         this.rate = rate;
+        this.insertTime = insertTime;
     }
 
     public Exchanges(int curIdFrom, int curIdTo) {
@@ -45,6 +52,14 @@ public class Exchanges {
         this.curIdFrom = curIdFrom;
         this.curIdTo = curIdTo;
 
+    }
+
+    public LocalDateTime getInsertTime() {
+        return insertTime;
+    }
+
+    public void setInsertTime(LocalDateTime insertTime) {
+        this.insertTime = insertTime;
     }
 
     public int getID() {
