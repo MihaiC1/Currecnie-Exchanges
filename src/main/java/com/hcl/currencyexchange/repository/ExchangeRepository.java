@@ -1,24 +1,27 @@
 package com.hcl.currencyexchange.repository;
 
+import com.hcl.currencyexchange.entity.Currencies;
 import com.hcl.currencyexchange.entity.Exchanges;
 import com.hcl.currencyexchange.entity.JoinTable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 
 @Transactional
 @Repository
 public interface ExchangeRepository extends JpaRepository<Exchanges,Integer> {
     // Method to extract a record by date
-    @Query(value = "SELECT new com.hcl.currencyexchange.entity.JoinTable (c.ID, c.date, c.rate,cur2.curIsoCode, cur.curIsoCode, c.insertTime) " +
+    @Query(value = "SELECT new com.hcl.currencyexchange.entity.JoinTable ( c.date, c.rate,cur2.curIsoCode, cur.curIsoCode, c.insertTime) " +
                    "FROM Currencies cur " +
                    "JOIN Exchanges c ON cur.curID = c.curIdFrom " +
                    "JOIN Currencies cur2 ON cur2.curID = c.curIdTo " +
@@ -27,7 +30,7 @@ public interface ExchangeRepository extends JpaRepository<Exchanges,Integer> {
     List<JoinTable> findByDate(LocalDate date);
 
     // Methods to extract a record by date and currency
-    @Query(value = "SELECT new com.hcl.currencyexchange.entity.JoinTable (c.ID, c.date, c.rate,cur2.curIsoCode, cur.curIsoCode, c.insertTime) " +
+    @Query(value = "SELECT new com.hcl.currencyexchange.entity.JoinTable ( c.date, c.rate,cur2.curIsoCode, cur.curIsoCode, c.insertTime) " +
                    "FROM Currencies cur " +
                    "JOIN Exchanges c ON cur.curID = c.curIdFrom " +
                    "JOIN Currencies cur2 ON cur2.curID = c.curIdTo " +
@@ -35,7 +38,7 @@ public interface ExchangeRepository extends JpaRepository<Exchanges,Integer> {
                    "ORDER BY c.ID ASC")
     List<JoinTable> getFromDateAndCurr(LocalDate date, String curr);
 
-    @Query(value = "SELECT new com.hcl.currencyexchange.entity.JoinTable (c.ID, c.date, c.rate,cur2.curIsoCode, cur.curIsoCode, c.insertTime) " +
+    @Query(value = "SELECT new com.hcl.currencyexchange.entity.JoinTable ( c.date, c.rate,cur2.curIsoCode, cur.curIsoCode, c.insertTime) " +
             "FROM Currencies cur " +
             "JOIN Exchanges c ON cur.curID = c.curIdFrom " +
             "JOIN Currencies cur2 ON cur2.curID = c.curIdTo " +
@@ -44,7 +47,7 @@ public interface ExchangeRepository extends JpaRepository<Exchanges,Integer> {
     List<JoinTable> getFromDateAndCurr(LocalDate date, String curr, String toCurr, Pageable page);
 
     //Method to extract all the records
-    @Query(value = "SELECT new com.hcl.currencyexchange.entity.JoinTable (c.ID, c.date, c.rate, cur2.curIsoCode, cur.curIsoCode, c.insertTime)" +
+    @Query(value = "SELECT new com.hcl.currencyexchange.entity.JoinTable ( c.date, c.rate, cur2.curIsoCode, cur.curIsoCode, c.insertTime)" +
                    "FROM Currencies cur " +
                    "JOIN Exchanges c ON cur.curID = c.curIdFrom " +
                    "JOIN Currencies cur2 ON cur2.curID = c.curIdTo " +
@@ -69,5 +72,9 @@ public interface ExchangeRepository extends JpaRepository<Exchanges,Integer> {
             "SET cur.CCN_RATE = ?1 " +
             "WHERE c.CUR_ISO_CODE = ?3 AND c2.CUR_ISO_CODE = ?4 AND cur.CCN_DATE = ?2", nativeQuery = true)
     void updateRecord(float rate, LocalDate date, String isoCodeFrom, String isoCodeTo);
+
+
+//    Map<String, Object> insertExchangesFromAPI(String date, Currencies curFrom, Currencies curTo);
+//    ResponseEntity<Object> getExchangeFromDateFromCurrAtCurr(String date, String curFrom, String curTo);
 
 }

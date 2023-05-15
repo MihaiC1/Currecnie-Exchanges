@@ -2,10 +2,11 @@ package com.hcl.currencyexchange.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 public class JoinTable {
-    int ID;
+
+
     String currencyTo;
     String currencyFrom;
     LocalDate date;
@@ -13,16 +14,16 @@ public class JoinTable {
     LocalDateTime insertTime;
 
 
-    public JoinTable(int ID, LocalDate date, float rate, String currencyTo, String currencyFrom, LocalDateTime insertTime) {
-        this.ID = ID;
+    public JoinTable(LocalDate date, float rate, String currencyTo, String currencyFrom, LocalDateTime insertTime) {
+
         this.currencyTo = currencyTo;
         this.currencyFrom = currencyFrom;
         this.date = date;
         this.rate = rate;
         this.insertTime = insertTime;
     }
-    public JoinTable(int ID, LocalDate date, float rate, String currencyTo, String currencyFrom) {
-        this.ID = ID;
+    public JoinTable( LocalDate date, float rate, String currencyTo, String currencyFrom) {
+        //this.ID = ID;
         this.currencyTo = currencyTo;
         this.currencyFrom = currencyFrom;
         this.date = date;
@@ -37,13 +38,13 @@ public class JoinTable {
         this.insertTime = insertTime;
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
+//    public int getID() {
+//        return ID;
+//    }
+//
+//    public void setID(int ID) {
+//        this.ID = ID;
+//    }
 
     public String getCurrencyTo() {
         return currencyTo;

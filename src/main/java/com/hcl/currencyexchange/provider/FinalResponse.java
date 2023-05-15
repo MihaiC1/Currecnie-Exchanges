@@ -1,15 +1,15 @@
-package com.hcl.currencyexchange;
+package com.hcl.currencyexchange.provider;
 
 public class FinalResponse {
-    private Object exchange;
+    private Object exchangeInfo;
     private String response;
 
     public FinalResponse(String message) {
         this.response = message;
     }
-    public FinalResponse(String message, Object exchange) {
+    public FinalResponse(String message, Object exchangeInfo) {
         this.response = message;
-        this.exchange = exchange;
+        this.exchangeInfo = exchangeInfo;
     }
 
     public String getResponse() {
@@ -20,7 +20,7 @@ public class FinalResponse {
         this.response = response;
     }
 
-    public Object getExchange() {
-        return exchange;
+    public Object getExchangeInfo() {
+        return exchangeInfo;
     }
 }
