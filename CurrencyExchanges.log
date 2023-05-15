@@ -126,3 +126,39 @@ date: 2023-04-10
 2023-05-15 10:54:34,127 INFO  AbstractEntityManagerFactoryBean:651 - [] Closing JPA EntityManagerFactory for persistence unit 'default'
 2023-05-15 10:54:34,128 INFO  HikariDataSource:350 - [] Pool1 - Shutdown initiated...
 2023-05-15 10:54:34,133 INFO  HikariDataSource:352 - [] Pool1 - Shutdown completed.
+2023-05-15 10:54:34,212 INFO  StartupInfoLogger:55 - [] Starting CurrencyExchangeApplication using Java 19.0.2 on MihaiPC with PID 8528 (D:\Currency exchange\target\classes started by mihai.dumitrascu99 in D:\Currency exchange)
+2023-05-15 10:54:34,212 INFO  SpringApplication:631 - [] No active profile set, falling back to 1 default profile: "default"
+2023-05-15 10:54:34,341 INFO  RepositoryConfigurationDelegate:132 - [] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-15 10:54:34,350 INFO  RepositoryConfigurationDelegate:201 - [] Finished Spring Data repository scanning in 9 ms. Found 2 JPA repository interfaces.
+2023-05-15 10:54:34,477 INFO  TomcatWebServer:108 - [] Tomcat initialized with port(s): 8080 (http)
+2023-05-15 10:54:34,478 INFO  DirectJDKLog:173 - [] Starting service [Tomcat]
+2023-05-15 10:54:34,478 INFO  DirectJDKLog:173 - [] Starting Servlet engine: [Apache Tomcat/9.0.73]
+2023-05-15 10:54:34,504 INFO  DirectJDKLog:173 - [] Initializing Spring embedded WebApplicationContext
+2023-05-15 10:54:34,504 INFO  ServletWebServerApplicationContext:292 - [] Root WebApplicationContext: initialization completed in 290 ms
+2023-05-15 10:54:34,537 WARN  HikariConfig:1042 - [] Pool1 - maxLifetime is less than 30000ms, setting to default 1800000ms.
+2023-05-15 10:54:34,537 WARN  HikariConfig:1092 - [] Pool1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2023-05-15 10:54:34,537 INFO  HikariDataSource:110 - [] Pool1 - Starting...
+2023-05-15 10:54:34,553 INFO  HikariDataSource:123 - [] Pool1 - Start completed.
+2023-05-15 10:54:34,557 INFO  LogHelper:31 - [] HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-15 10:54:34,562 INFO  Dialect:175 - [] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2023-05-15 10:54:34,610 INFO  JtaPlatformInitiator:52 - [] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-15 10:54:34,610 INFO  AbstractEntityManagerFactoryBean:437 - [] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-15 10:54:34,786 WARN  JpaBaseConfiguration$JpaWebConfiguration:223 - [] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-15 10:54:34,884 INFO  OptionalLiveReloadServer:59 - [] LiveReload server is running on port 35729
+2023-05-15 10:54:34,892 INFO  TomcatWebServer:220 - [] Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-15 10:54:34,896 INFO  StartupInfoLogger:61 - [] Started CurrencyExchangeApplication in 0.709 seconds (JVM running for 215.08)
+2023-05-15 10:54:34,897 INFO  ConditionEvaluationDeltaLoggingListener:63 - [] Condition evaluation unchanged
+2023-05-15 10:54:34,898 INFO  CurrencyExchangeApplication:19 - [] Currency exchange service started
+2023-05-15 10:54:56,554 INFO  DirectJDKLog:173 - [] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-15 10:54:56,555 INFO  FrameworkServlet:525 - [] Initializing Servlet 'dispatcherServlet'
+2023-05-15 10:54:56,555 INFO  FrameworkServlet:547 - [] Completed initialization in 0 ms
+2023-05-15 10:54:56,557 INFO  DatabaseManager:215 - [] 
+Input: 
+date: 2023-04-10
+2023-05-15 10:54:56,565 INFO  DatabaseManager:233 - [] Response: OK
+2023-05-15 10:56:03,181 INFO  DatabaseManager:182 - [] 
+Input: 
+date: 2023-04-10
+fromCurrency: EUR
+
+2023-05-15 10:56:03,188 INFO  DatabaseManager:200 - [] Response: OK
