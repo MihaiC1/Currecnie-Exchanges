@@ -8,6 +8,7 @@ class CurrencyExchangeApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("Test running!");
 	}
 
 }

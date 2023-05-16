@@ -1,4 +1,4 @@
-package com.hcl.currencyexchange;
+package com.hcl.currencyexchange.provider;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hcl.currencyexchange.provider.Data;

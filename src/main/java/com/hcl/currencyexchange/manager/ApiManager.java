@@ -1,7 +1,7 @@
 package com.hcl.currencyexchange.manager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.hcl.currencyexchange.ApiResponse;
+import com.hcl.currencyexchange.provider.ApiResponse;
 import com.hcl.currencyexchange.entity.Currencies;
 import com.hcl.currencyexchange.entity.Exchanges;
 import com.hcl.currencyexchange.provider.HistoricalPoints;
