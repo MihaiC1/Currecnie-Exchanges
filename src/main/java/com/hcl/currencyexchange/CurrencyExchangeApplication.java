@@ -8,6 +8,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * <h1>Currency Exchange Application class</h1>
+ * This class is the class used to run the application.
+ * @author Dumitrascu Mihai - Cosmin
+ * @version 1.0
+ * @since 2023-05-18
+ */
 @EnableTransactionManagement
 @SpringBootApplication(scanBasePackages = "com.hcl.currencyexchange")
 public class CurrencyExchangeApplication {

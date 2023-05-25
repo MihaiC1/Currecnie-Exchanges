@@ -1,0 +1,8 @@
+com.hcl.currencyexchange
+com.hcl.currencyexchange.bean
+com.hcl.currencyexchange.entity
+com.hcl.currencyexchange.exception
+com.hcl.currencyexchange.manager
+com.hcl.currencyexchange.repository
+com.hcl.currencyexchange.restController
+com.hcl.currencyexchange.utility

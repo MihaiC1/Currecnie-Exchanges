@@ -1,59 +1,90 @@
 package com.hcl.currencyexchange.repository;
 
-import com.hcl.currencyexchange.entity.Currencies;
-import com.hcl.currencyexchange.entity.Exchanges;
-import com.hcl.currencyexchange.entity.JoinTable;
+import com.hcl.currencyexchange.entity.ExchangesEntity;
+import com.hcl.currencyexchange.bean.JoinTableBean;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
-
+/**
+ * <h1>Exchange Repository interface</h1>
+ * This interface is used to make a connection with currency_conversion table.
+ * @author Dumitrascu Mihai - Cosmin
+ * @version 1.0
+ * @since 2023-05-18
+ */
 @Transactional
 @Repository
-public interface ExchangeRepository extends JpaRepository<Exchanges,Integer> {
-    // Method to extract a record by date
-    @Query(value = "SELECT new com.hcl.currencyexchange.entity.JoinTable ( c.date, c.rate,cur2.curIsoCode, cur.curIsoCode, c.insertTime) " +
-                   "FROM Currencies cur " +
-                   "JOIN Exchanges c ON cur.curID = c.curIdFrom " +
-                   "JOIN Currencies cur2 ON cur2.curID = c.curIdTo " +
+public interface ExchangeRepository extends JpaRepository<ExchangesEntity,Integer> {
+    /**
+     * This method is used to extract a list of JoinTableBean objects, using MySQL query, from the table resulting from joining the currency and currency_conversion tables.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @return List<JoinTableBean> a list with all the records found in the table.
+     */
+    @Query(value = "SELECT new com.hcl.currencyexchange.bean.JoinTableBean ( c.date, c.rate,cur2.curIsoCode, cur.curIsoCode, c.insertTime) " +
+                   "FROM CurrenciesEntity cur " +
+                   "JOIN ExchangesEntity c ON cur.curID = c.curIdFrom " +
+                   "JOIN CurrenciesEntity cur2 ON cur2.curID = c.curIdTo " +
                    "WHERE c.date = ?1 "+
-                   "ORDER BY c.ID ASC")
-    List<JoinTable> findByDate(LocalDate date);
+                   "ORDER BY c.id ASC")
+    List<JoinTableBean> findByDate(LocalDate date);
 
-    // Methods to extract a record by date and currency
-    @Query(value = "SELECT new com.hcl.currencyexchange.entity.JoinTable ( c.date, c.rate,cur2.curIsoCode, cur.curIsoCode, c.insertTime) " +
-                   "FROM Currencies cur " +
-                   "JOIN Exchanges c ON cur.curID = c.curIdFrom " +
-                   "JOIN Currencies cur2 ON cur2.curID = c.curIdTo " +
+    /**
+     * This method is used to extract a list of JoinTableBean objects, using MySQL query, from the table resulting from joining the currency and currency_conversion tables.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param curr The currency ISO used to filter all the records  (ex. USD, EUR, etc).
+     * @return List<JoinTableBean> a list with all the records found in the table after filtering.
+     */
+    @Query(value = "SELECT new com.hcl.currencyexchange.bean.JoinTableBean (c.date, c.rate,cur2.curIsoCode, cur.curIsoCode, c.insertTime) " +
+                   "FROM CurrenciesEntity cur " +
+                   "JOIN ExchangesEntity c ON cur.curID = c.curIdFrom " +
+                   "JOIN CurrenciesEntity cur2 ON cur2.curID = c.curIdTo " +
                    "WHERE c.date = ?1 AND cur.curIsoCode = ?2 "+
-                   "ORDER BY c.ID ASC")
-    List<JoinTable> getFromDateAndCurr(LocalDate date, String curr);
+                   "ORDER BY c.id ASC")
+    List<JoinTableBean> getFromDateAndCurr(LocalDate date, String curr);
 
-    @Query(value = "SELECT new com.hcl.currencyexchange.entity.JoinTable ( c.date, c.rate,cur2.curIsoCode, cur.curIsoCode, c.insertTime) " +
-            "FROM Currencies cur " +
-            "JOIN Exchanges c ON cur.curID = c.curIdFrom " +
-            "JOIN Currencies cur2 ON cur2.curID = c.curIdTo " +
+    /**
+     * This method is used to extract a list of JoinTableBean objects, using MySQL query, from the table resulting from joining the currency and currency_conversion tables.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param curr The currency ISO used to filter all the records  (ex. USD, EUR, etc).
+     * @param toCurr The currency ISO used to filter all the records  (ex. USD, EUR, etc).
+     * @param page Used to display only the first record found.
+     * @return List<JoinTableBean> a list with all the records found in the table after filtering.
+     */
+    @Query(value = "SELECT new com.hcl.currencyexchange.bean.JoinTableBean ( c.date, c.rate,cur2.curIsoCode, cur.curIsoCode, c.insertTime) " +
+            "FROM CurrenciesEntity cur " +
+            "JOIN ExchangesEntity c ON cur.curID = c.curIdFrom " +
+            "JOIN CurrenciesEntity cur2 ON cur2.curID = c.curIdTo " +
             "WHERE c.date = ?1 AND cur.curIsoCode = ?2 AND cur2.curIsoCode = ?3 " +
-            "ORDER BY c.ID DESC ")
-    List<JoinTable> getFromDateAndCurr(LocalDate date, String curr, String toCurr, Pageable page);
+            "ORDER BY c.id DESC ")
+    List<JoinTableBean> getFromDateAndCurr(LocalDate date, String curr, String toCurr, Pageable page);
 
-    //Method to extract all the records
-    @Query(value = "SELECT new com.hcl.currencyexchange.entity.JoinTable ( c.date, c.rate, cur2.curIsoCode, cur.curIsoCode, c.insertTime)" +
-                   "FROM Currencies cur " +
-                   "JOIN Exchanges c ON cur.curID = c.curIdFrom " +
-                   "JOIN Currencies cur2 ON cur2.curID = c.curIdTo " +
-                   "ORDER BY c.ID ASC")
-    List<JoinTable> getAll();
+    /**
+     * This method is used to extract a list of JoinTableBean objects, using MySQL query, from the table resulting from joining the currency and currency_conversion tables.
+     * @return List<JoinTableBean> a list with all the records found.
+     */
+    @Query(value = "SELECT new com.hcl.currencyexchange.bean.JoinTableBean ( c.date, c.rate, cur2.curIsoCode, cur.curIsoCode, c.insertTime)" +
+                   "FROM CurrenciesEntity cur " +
+                   "JOIN ExchangesEntity c ON cur.curID = c.curIdFrom " +
+                   "JOIN CurrenciesEntity cur2 ON cur2.curID = c.curIdTo " +
+                   "ORDER BY c.id ASC")
+    List<JoinTableBean> getAll();
 
+    /**
+     * This method is used to insert records in the currency_conversion table.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param CCN_CUR_ID_FROM The ID of the currency that will be converted.
+     * @param CCN_CUR_ID_TO The ID of the currency in which the CCN_CUR_ID_FROM will be converted.
+     * @param CCN_RATE The conversion rate between specified currencies.
+     * @param insertTime The date and time when the record was inserted.
+     */
     @Transactional
     @Modifying
     @Query(value = "INSERT INTO currency_conversion (CCN_DATE, CCN_CUR_ID_FROM, CCN_CUR_ID_TO, CCN_RATE, CCN_INSERT_TIME) " +
@@ -64,6 +95,13 @@ public interface ExchangeRepository extends JpaRepository<Exchanges,Integer> {
                          @Param("CCN_RATE") float CCN_RATE,
                          @Param("CCN_INSERT_TIME")LocalDateTime insertTime);
 
+    /**
+     * This method is used to update the rate of a specific record from the currency_conversion table.
+     * @param rate The updated conversion rate between specified currencies.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param isoCodeFrom The currency ISO to be converted (ex. USD, EUR, etc).
+     * @param isoCodeTo The currency ISO to convert into (ex. USD, EUR, etc).
+     */
     @Modifying
     @Transactional
     @Query(value = "UPDATE currency_conversion cur " +
@@ -74,7 +112,5 @@ public interface ExchangeRepository extends JpaRepository<Exchanges,Integer> {
     void updateRecord(float rate, LocalDate date, String isoCodeFrom, String isoCodeTo);
 
 
-//    Map<String, Object> insertExchangesFromAPI(String date, Currencies curFrom, Currencies curTo);
-//    ResponseEntity<Object> getExchangeFromDateFromCurrAtCurr(String date, String curFrom, String curTo);
 
 }

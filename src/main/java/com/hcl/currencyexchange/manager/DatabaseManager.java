@@ -1,22 +1,23 @@
 package com.hcl.currencyexchange.manager;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.hcl.currencyexchange.provider.FinalResponse;
-import com.hcl.currencyexchange.entity.Currencies;
-import com.hcl.currencyexchange.entity.Exchanges;
-import com.hcl.currencyexchange.entity.JoinTable;
+import com.hcl.currencyexchange.bean.FinalResponseBean;
+import com.hcl.currencyexchange.entity.CurrenciesEntity;
+import com.hcl.currencyexchange.entity.ExchangesEntity;
+import com.hcl.currencyexchange.bean.JoinTableBean;
 import com.hcl.currencyexchange.repository.CurrenciesRepository;
 import com.hcl.currencyexchange.repository.ExchangeRepository;
-//import com.hcl.currencyexchange.restController.Controller;
-import org.apache.commons.validator.GenericValidator;
+import com.hcl.currencyexchange.exception.ParameterCheckException;
+import com.hcl.currencyexchange.utility.ParameterValidation;
+import com.hcl.currencyexchange.exception.SendRequestToProviderException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,171 +26,213 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@EnableJpaRepositories(basePackages = "com.hcl.currencyexchange.repository")
+/**
+ * <h1>Database manager</h1>
+ * The class DatabaseManager is used to handle inserting, updating and extracting data to/from the database.
+ * @author Dumitrascu Mihai - Cosmin
+ * @version 1.0
+ * @since 2023-05-18
+ */
+@Service
+
 public class DatabaseManager extends ApiManager {
-
+    @Autowired
+    ExchangeRepository exchangeRepositoryObj;
+    @Autowired
+    ParameterValidation parameterValidation;
     private static final Logger LOG = LogManager.getLogger(DatabaseManager.class);
+    Map<String, Object> response = new HashMap<>();
 
+    /**
+     * This is the empty constructor of the class.
+     */
     public DatabaseManager() {
+
     }
 
-    public Map<String, Object> insertExchangesFromAPI(String date, Currencies curFrom, Currencies curTo,ExchangeRepository exchangeRepositoryObj){
-        Map<String, Object> response = new HashMap<>();
-        try{
+    /**
+     * This method is used to insert records in the currency_conversion table using information extracted from the API.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param curFrom The object is used to get the specific ID for the currency that will be exchanged.
+     * @param curTo The object is used to get the specific ID for the currency that the user will exchange into.
+     * @return Map<String, Object> A HashMap object with a String - String key - value pair if inserting failed. A HashMap object with a String-JoinTableBean key-value pair if inserting was successful.
+     */
+    public Map<String, Object> insertExchangesFromAPI(String date, CurrenciesEntity curFrom, CurrenciesEntity curTo) {
 
-            Exchanges exchangeToBeInserted = modifyDataFromAPI(date, curFrom, curTo);
-            if (exchangeToBeInserted == null){
+        try {
+
+            ExchangesEntity exchangeToBeInserted = extractExchangeFromProvider(date, curFrom, curTo);
+            if (exchangeToBeInserted == null) {
                 response.put("Response: ", "The API does not have informations you are looking for!");
+                LOG.error("Response: The API does not have informations you are looking for!");
                 return response;
             }
-            JoinTable result = new JoinTable(exchangeToBeInserted.getDate(),exchangeToBeInserted.getRate(),curTo.getCurIsoCode(),curFrom.getCurIsoCode(),exchangeToBeInserted.getInsertTime());
-            exchangeRepositoryObj.insertExchanges(exchangeToBeInserted.getDate(),exchangeToBeInserted.getCurIdFrom(),exchangeToBeInserted.getCurIdTo(),exchangeToBeInserted.getRate(),exchangeToBeInserted.getInsertTime());
+            JoinTableBean result = new JoinTableBean(exchangeToBeInserted.getDate(), exchangeToBeInserted.getRate(), curTo.getCurIsoCode(), curFrom.getCurIsoCode(), exchangeToBeInserted.getInsertTime());
+            exchangeRepositoryObj.insertExchanges(exchangeToBeInserted.getDate(), exchangeToBeInserted.getCurIdFrom(), exchangeToBeInserted.getCurIdTo(), exchangeToBeInserted.getRate(), exchangeToBeInserted.getInsertTime());
+            LOG.info("Response: OK");
             response.put("Response: ", result);
             return response;
         }
-        catch (JsonProcessingException e){
-            response.put("Response: ", e);
+        catch (Exception e) {
+            response.put("Response: ", e.getMessage());
+            LOG.error(e);
             return response;
         }
     }
-    public ResponseEntity<Object> updateById(Float rate, String date, String curFrom, String curTo, CurrenciesRepository currenciesRepositoryObj, ExchangeRepository exchangeRepositoryObj) {
+
+    /**
+     * This method is used to manually update the rate of a record from the currency_conversion table.
+     * @param rate The updated rate for the transaction.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param curFrom The currency ISO to be converted (ex. USD, EUR, etc).
+     * @param curTo The currency ISO to convert into (ex. USD, EUR, etc).
+     * @return ResponseEntity<Object> used to display the output in JSON format.
+     */
+    public ResponseEntity<Object> updateById(Float rate, String date, String curFrom, String curTo) {
 
         try {
             LOG.info("\nInput:\n Date: " + date + "\nCurrencyFrom: " + curFrom + "\nCurrencyTo: " + curTo + "\nExchange rate: " + rate);
-            Currencies curFromObj = currenciesRepositoryObj.getByISO(curFrom);
-            Currencies curToObj = currenciesRepositoryObj.getByISO(curTo);
-            if (!(GenericValidator.isDate(date, "yyyy-MM-dd", true))) {
-                LOG.error("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data updated!");
-                return new ResponseEntity<>(new FinalResponse("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data updated!"), HttpStatus.BAD_REQUEST);
-            }
-            if (curFromObj == null) {
-                LOG.error(curFrom + " is not available for exchanging! No data updated!");
-                return new ResponseEntity<>(new FinalResponse(curFrom + " is not available for exchanging! No data updated!"), HttpStatus.BAD_REQUEST);
-            }
-            if (curToObj == null) {
-                LOG.error(curTo + " is not available for exchanging! No data updated!");
-                return new ResponseEntity<>(new FinalResponse(curTo + " is not available for exchanging! No data updated!"), HttpStatus.BAD_REQUEST);
-            }
-            if (rate <= 0) {
-                LOG.error("The rate cannot be less then, or equal to 0! No data updated!");
-                return new ResponseEntity<>(new FinalResponse("The rate cannot be less then, or equal to 0! No data updated!"), HttpStatus.BAD_REQUEST);
-            }
+
+            parameterValidation.dateValidation(date);
+            parameterValidation.currencyValidation(curFrom);
+            parameterValidation.currencyValidation(curTo);
+            parameterValidation.rateValidation(rate);
 
 
             DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(date, dateFormat);
             exchangeRepositoryObj.updateRecord(rate, localDate, curFrom, curTo);
-            Map<String, Object> response = new HashMap<>();
             response.put("response", "OK");
             LOG.info("Response: OK");
             return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
+        }catch (ParameterCheckException e) {
             LOG.error("Error stack trace: " + e);
-            return new ResponseEntity<>(new FinalResponse(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("Response: ", e.getMessage());
+            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            LOG.error("Error stack trace: " + e);
+            response.put("Response: ", e.getMessage());
+            return new ResponseEntity<Object>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public ResponseEntity<Object> addExchanges(String date, String curFrom, String curTo, Float rate, CurrenciesRepository currenciesRepositoryObj, ExchangeRepository exchangeRepositoryObj) {
+
+    /**
+     * This  method is used to manually add records into the currency_conversion table.
+     * @param rate The updated rate for the transaction.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param curFrom The currency ISO to be converted (ex. USD, EUR, etc).
+     * @param curTo The currency ISO to convert into (ex. USD, EUR, etc).
+     * @return ResponseEntity<Object> used to display the output in JSON format.
+     */
+    public ResponseEntity<Object> addExchanges(String date, String curFrom, String curTo, Float rate) {
+
         try {
             LOG.info("\nInput:\n Date: " + date + "\nCurrencyFrom: " + curFrom + "\nCurrencyTo: " + curTo + "\nExchange rate: " + rate);
 
-            Currencies curFromObj = currenciesRepositoryObj.getByISO(curFrom);
-            if (curFromObj == null) {
-                LOG.error(curFrom + " is not available for exchanging! No data added!");
-                return new ResponseEntity<>(new FinalResponse(curFrom + " is not available for exchanging! No data added!"), HttpStatus.BAD_REQUEST);
-            }
+            CurrenciesEntity curFromObj = parameterValidation.currencyValidation(curFrom);
             int idForCurFrom = curFromObj.getCurID();
 
-            Currencies curToObj = currenciesRepositoryObj.getByISO(curTo);
-            if (curToObj == null) {
-                LOG.error(curTo + " is not available for exchanging! No data added!");
-                return new ResponseEntity<>(new FinalResponse(curTo + " is not available for exchanging! No data added!"), HttpStatus.BAD_REQUEST);
-            }
+            CurrenciesEntity curToObj = parameterValidation.currencyValidation(curTo);
             int idForCurTo = curToObj.getCurID();
 
-            if (!(GenericValidator.isDate(date, "yyyy-MM-dd", true))) {
-                LOG.error("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data added!");
-                return new ResponseEntity<>(new FinalResponse("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data added!"), HttpStatus.BAD_REQUEST);
-            }
-
-
-            if (rate <= 0) {
-                LOG.error("The rate cannot be less then, or equal to 0! No data added!");
-                return new ResponseEntity<>(new FinalResponse("The rate cannot be less then, or equal to 0! No data added!"), HttpStatus.BAD_REQUEST);
-            }
+            parameterValidation.dateValidation(date);
+            parameterValidation.rateValidation(rate);
 
             DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(date, dateFormat);
             exchangeRepositoryObj.insertExchanges(localDate, idForCurFrom, idForCurTo, rate, LocalDateTime.now());
-            Map<String, Object> response = new HashMap<>();
+
             response.put("response", "OK");
             LOG.info("Response: OK");
             return new ResponseEntity<>(response, HttpStatus.OK);
 
-        } catch (Exception e) {
+        }catch (ParameterCheckException e) {
+            LOG.error("Error stack trace: " + e);
+            response.put("Response: ", e.getMessage());
+            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
             LOG.error("Error stack trace: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            response.put("Response: ", e.getMessage());
+            return new ResponseEntity<Object>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
+    /**
+     * This method is used to retrieve a record from the currency_conversion table, based on the parameters. If the transaction is not available, the transaction will be retrieved from the API and inserted into the table.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param curFrom The currency ISO to be converted (ex. USD, EUR, etc).
+     * @param curTo The currency ISO to convert into (ex. USD, EUR, etc).
+     * @return ResponseEntity<Object> used to display the output in JSON format.
+     */
 
-    public ResponseEntity<Object> getExchangeFromDateFromCurrAtCurr (String date, String curFrom, String curTo, CurrenciesRepository currenciesRepositoryObj, ExchangeRepository exchangeRepositoryObj) {
+    public ResponseEntity<Object> getExchangeFromDateFromCurrAtCurr(String date, String curFrom, String curTo) {
 
         try {
-            Map<String, Object> response = new HashMap<>();
-            Currencies curFromObj = currenciesRepositoryObj.getByISO(curFrom);
-            Currencies curToObj = currenciesRepositoryObj.getByISO(curTo);
 
             LOG.info("\nInput: \n" + "date: " + date + "\n" + "fromCurrency: " + curFrom + "\n" + "toCurrency: " + curTo);
-            if (!(GenericValidator.isDate(date, "yyyy-MM-dd", true))) {
-                LOG.error("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data displayed!");
-                response.put("Response: ", "The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data displayed!");
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-            }
-            if (curFromObj == null) {
-                LOG.error(curFrom + " is not available for exchanging! No data displayed!");
-                response.put("Response: ",curFrom + " is not available for exchanging! No data displayed!");
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-            }
-            if (curToObj == null) {
-                LOG.error(curTo + " is not available for exchanging! No data displayed!");
-                return new ResponseEntity<>(new FinalResponse(curTo + " is not available for exchanging! No data displayed!"), HttpStatus.BAD_REQUEST);
-            }
+
+            parameterValidation.dateValidation(date);
+
+            CurrenciesEntity curFromObj = parameterValidation.currencyValidation(curFrom);
+
+            CurrenciesEntity curToObj = parameterValidation.currencyValidation(curTo);
 
             DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(date, dateFormat);
-            List<JoinTable> result = exchangeRepositoryObj.getFromDateAndCurr(localDate, curFrom, curTo, PageRequest.of(0, 1));
+
+
+            List<JoinTableBean> result = exchangeRepositoryObj.getFromDateAndCurr(localDate, curFrom, curTo, PageRequest.of(0, 1));
 
 
             if (result.isEmpty()) {
-                return new ResponseEntity<>(new FinalResponse("OK", insertExchangesFromAPI(date, curFromObj, curToObj,exchangeRepositoryObj).get("Response: ")), HttpStatus.OK);
+                Map<String, Object> insertingResponse = insertExchangesFromAPI(date, curFromObj, curToObj);
+                if (!insertingResponse.get("Response: ").getClass().equals(String.class)){
+                    return new ResponseEntity<>(new FinalResponseBean("OK", insertingResponse.get("Response: ")), HttpStatus.OK);
+                }
+                Map<String, Object> failureResponse = new HashMap<String, Object>();
+                failureResponse.put("Response: ", "Invalid date passed!");
+                return new ResponseEntity<>(failureResponse, HttpStatus.BAD_REQUEST);
+
             }
 
             LOG.info("Response: OK");
-            return new ResponseEntity<>(new FinalResponse("OK", result), HttpStatus.OK);
+            return new ResponseEntity<>(new FinalResponseBean("OK", result), HttpStatus.OK);
 
-        } catch (Exception e) {
+        } catch (ParameterCheckException e) {
             LOG.error("Error stack trace: " + e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            response.put("Response: ", e.getMessage());
+            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+        }
+        catch(SendRequestToProviderException e){
+            LOG.error("Error stack trace: " + e);
+            response.put("Response: ", e.getMessage());
+            return new ResponseEntity<Object>(response, HttpStatus.BAD_GATEWAY);
+        }
+        catch (Exception e){
+
+            LOG.error("Error stack trace: " + e);
+            response.put("Response: ", e.getMessage());
+            return new ResponseEntity<Object>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public ResponseEntity<Object> getExchangeFromDateWithCurr(String date, String curFrom, CurrenciesRepository currenciesRepositoryObj, ExchangeRepository exchangeRepositoryObj) {
+    /**
+     * This method is used to retrieve a record from the currency_conversion table, based on the parameters.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param curFrom The currency ISO to be converted (ex. USD, EUR, etc).
+     * @return ResponseEntity<Object> used to display the output in JSON format.
+     */
+    public ResponseEntity<Object> getExchangeFromDateWithCurr(String date, String curFrom) {
 
         try {
-            List<JoinTable> result;
-            Map<String, Object> response = new HashMap<>();
-            Currencies curFromObj = currenciesRepositoryObj.getByISO(curFrom);
+
+            List<JoinTableBean> result;
+
             LOG.info("\nInput: \n" + "date: " + date + "\n" + "fromCurrency: " + curFrom + "\n");
-            if (!(GenericValidator.isDate(date, "yyyy-MM-dd", true))) {
-                LOG.error("The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data displayed!");
-                response.put("Response", "The data is not in the correct format. The accepted format is: YYYY-MM-DD! No data displayed!");
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-            }
-            if (curFromObj == null) {
-                LOG.error(curFrom + " is not available for exchanging! No data displayed!");
-                response.put("Response", curFrom + " is not available for exchanging! No data displayed!");
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-            }
+            parameterValidation.dateValidation(date);
+            parameterValidation.currencyValidation(curFrom);
             DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(date, dateFormat);
             result = exchangeRepositoryObj.getFromDateAndCurr(localDate, curFrom);
@@ -198,28 +241,36 @@ public class DatabaseManager extends ApiManager {
                 return new ResponseEntity<Object>(result, HttpStatus.OK);
             } else {
                 LOG.info("Response: OK");
-                return new ResponseEntity<>(new FinalResponse("OK", result), HttpStatus.OK);
+                return new ResponseEntity<>(new FinalResponseBean("OK", result), HttpStatus.OK);
             }
-
-
-        } catch (Exception e) {
+        }catch(ParameterCheckException e){
             LOG.error("Error stack trace: " + e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+
+            response.put("Response: ", e.getMessage());
+            LOG.info(response.hashCode());
+            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
         }
+
+        catch (Exception e) {
+            LOG.error("Error stack trace: " + e);
+            response.put("Response: ", e.getMessage());
+            return new ResponseEntity<Object>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
-    public ResponseEntity<Object> getExchangeFromDate(String date, ExchangeRepository exchangeRepositoryObj) {
+    /**
+     * This method is used to retrieve a record from the currency_conversion table, based on the parameters.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @return ResponseEntity<Object> used to display the output in JSON format.
+     */
+    public ResponseEntity<Object> getExchangeFromDate(String date) {
 
         try {
 
 
             LOG.info("\nInput: \ndate: " + date);
-            Map<String, Object> response = new HashMap<>();
-            List<JoinTable> exchangesFromDate;
-            if (!(GenericValidator.isDate(date, "yyyy-MM-dd", true))) {
-                LOG.error("Invalid date format! The accepted format is: YYYY-MM-DD");
-                response.put("Response", "Invalid date format! The accepted format is: YYYY-MM-DD");
-                return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
-            }
+            List<JoinTableBean> exchangesFromDate;
+            parameterValidation.dateValidation(date);
             DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(date, dateFormat);
             exchangesFromDate = exchangeRepositoryObj.findByDate(localDate);
@@ -234,19 +285,32 @@ public class DatabaseManager extends ApiManager {
             return new ResponseEntity<Object>(exchangesFromDate, HttpStatus.OK);
 
 
-        } catch (Exception e) {
+        }catch (ParameterCheckException e){
             LOG.error("Error stack trace: " + e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            response.put("Response: ", e.getMessage());
+            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            LOG.error("Error stack trace: " + e);
+            response.put("Response: ", e.getMessage());
+            return new ResponseEntity<Object>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public ResponseEntity<Object> getExchanges(ExchangeRepository exchangeRepositoryObj) {
+
+    /**
+     * This method return all the records from the currency_conversion table.
+     * @return ResponseEntity<Object> used to display the output in JSON format.
+     */
+    public ResponseEntity<Object> getExchanges() {
+
         try {
-            List<JoinTable> result = exchangeRepositoryObj.getAll();
+            List<JoinTableBean> result = exchangeRepositoryObj.getAll();
             LOG.info("DATA RETRIEVED");
             return new ResponseEntity<Object>(result, HttpStatus.OK);
         } catch (Exception e) {
             LOG.error("Error stack trace: " + e);
-            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("Response: ", e.getMessage());
+            return new ResponseEntity<Object>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -1,37 +1,54 @@
 package com.hcl.currencyexchange.restController;
 
 import com.hcl.currencyexchange.manager.DatabaseManager;
-import com.hcl.currencyexchange.repository.CurrenciesRepository;
-import com.hcl.currencyexchange.repository.ExchangeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-
+/**
+ * <h1>Controller class</h1>
+ * This class is used to handle all the requests sent by the user.
+ * @author Dumitrascu Mihai - Cosmin
+ * @version 1.0
+ * @since 2023-05-18
+ */
 
 @RestController
 @EnableJpaRepositories(basePackages = "com.hcl.currencyexchange.repository")
 @RequestMapping(value = "/")
+@Scope("request")
 public class Controller {
-    @Autowired
-    ExchangeRepository exchangeRepositoryObj;
-    @Autowired
-    CurrenciesRepository currenciesRepositoryObj;
-    DatabaseManager databaseManager = new DatabaseManager();
 
+    @Autowired
+    DatabaseManager databaseManager;
 
-    //Save exchanges to the database - returns the result of the saving process
+    /**
+     * This method is used to handle the POST request to the localhost:8080/exchange/v1/add URL by calling the addExchanges method from the DatabaseManager class.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param curFrom The currency ISO to be converted (ex. USD, EUR, etc).
+     * @param curTo The currency ISO to convert into (ex. USD, EUR, etc).
+     * @param rate The conversion rate between specified currencies.
+     * @return ResponseEntity<Object> used to display the output in JSON format.
+     */
     @RequestMapping(value = "/exchange/v1/add", method = RequestMethod.POST)
     public ResponseEntity<Object> addExchanges(@RequestParam("Date") String date,
                                                @RequestParam("CurFrom") String curFrom,
                                                @RequestParam("CurTo") String curTo,
                                                @RequestParam("Rate") Float rate) {
-        return databaseManager.addExchanges(date, curFrom, curTo, rate, currenciesRepositoryObj, exchangeRepositoryObj);
+        return databaseManager.addExchanges(date, curFrom, curTo, rate);
 
     }
-    // Update a specific transaction - returns the result of the saving (Succesfully saved / failed to save)
-    //id = identifier to help finding the record
+
+    /**
+     * This method is used to handle the PUT request to the localhost:8080/exchange/v1/update URL by calling the updateById method from the DatabaseManager class.
+     * @param rate The updated conversion rate between specified currencies.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param curFrom The currency ISO to be converted (ex. USD, EUR, etc).
+     * @param curTo The currency ISO to convert into (ex. USD, EUR, etc).
+     * @return ResponseEntity<Object> used to display the output in JSON format.
+     */
 
     @RequestMapping(value = "/exchange/v1/update", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateById(@RequestParam("Rate") Float rate,
@@ -39,38 +56,52 @@ public class Controller {
                                              @RequestParam("CurFrom") String curFrom,
                                              @RequestParam("CurTo") String curTo) {
 
-        return databaseManager.updateById(rate, date, curFrom, curTo, currenciesRepositoryObj, exchangeRepositoryObj);
+        return databaseManager.updateById(rate, date, curFrom, curTo);
     }
 
-    //Get all the records available - returns a list with all the elements
+    /**
+     * This method is used to handle the GET request to the localhost:8080/exchange/v1/get URL by calling the getExchanges method from the DatabaseManager class.
+     * @return ResponseEntity<Object> used to display the output in JSON format.
+     */
     @RequestMapping(value = "/exchange/v1/get", method = RequestMethod.GET)
     public ResponseEntity<Object> getExchanges() {
-        return databaseManager.getExchanges(exchangeRepositoryObj);
+        return databaseManager.getExchanges();
     }
 
-    //Get all the records from the specified date - returns a list with all the elements
-    // date = transaction date
+    /**
+     * This method is used to handle the GET request to the localhost:8080/exchange/v1/get/{date} URL by calling the getExchangeFromDate method from the DatabaseManager class.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @return ResponseEntity<Object> used to display the output in JSON format.
+     */
     @RequestMapping(value = "/exchange/v1/get/{date}", method = RequestMethod.GET)
     public ResponseEntity<Object> getExchangeFromDate(@PathVariable("date") String date) {
-        return databaseManager.getExchangeFromDate(date, exchangeRepositoryObj);
+        return databaseManager.getExchangeFromDate(date);
     }
 
 
-    //Get all the exchanges from the specified date with the specified initial currency - return a list with specific elements
-    // fromCurr = currency to be exchanged
-    // date = transaction date
+    /**
+     * This method is used to handle the GET request to the localhost:8080/exchange/v1/get/{date}/{fromCurr} URL by calling the getExchangeFromDateWithCurr method from the DatabaseManager class.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param curFrom The currency ISO to be converted (ex. USD, EUR, etc).
+     * @return ResponseEntity<Object> used to display the output in JSON format.
+     */
     @RequestMapping(value = "/exchange/v1/get/{date}/{fromCurr}", method = RequestMethod.GET)
     public ResponseEntity<Object> getExchangeFromDateWithCurr(@PathVariable("date") String date,
                                                               @PathVariable("fromCurr") String curFrom) {
-        return databaseManager.getExchangeFromDateWithCurr(date, curFrom, currenciesRepositoryObj, exchangeRepositoryObj);
+        return databaseManager.getExchangeFromDateWithCurr(date, curFrom);
     }
 
-    //Get all the exchanges from the specified date with the specified initial currency and end currency
-    //If nothing was found in the database, send a request to yahoo API and save the response in the database;
+    /**
+     * This method is used to handle the GET request to the localhost:8080/exchange/v1/get/{date}/{fromCurr} URL by calling the getExchangeFromDateFromCurrAtCurr method from the DatabaseManager class.
+     * @param date The date of the transaction. Date format: YYYY-MM-DD.
+     * @param curFrom The currency ISO to be converted (ex. USD, EUR, etc).
+     * @param curTo The currency ISO to convert into (ex. USD, EUR, etc).
+     * @return ResponseEntity<Object> used to display the output in JSON format.
+     */
     @RequestMapping(value = "/exchange/v1/get/{date}/{fromCurr}/{toCurr}", method = RequestMethod.GET)
     public ResponseEntity<Object> getExchangeFromDateFromCurrAtCurr(@PathVariable("date") String date,
                                                                     @PathVariable("fromCurr") String curFrom,
                                                                     @PathVariable("toCurr") String curTo) {
-        return databaseManager.getExchangeFromDateFromCurrAtCurr(date, curFrom, curTo, currenciesRepositoryObj, exchangeRepositoryObj);
+        return databaseManager.getExchangeFromDateFromCurrAtCurr(date, curFrom, curTo);
     }
 }
