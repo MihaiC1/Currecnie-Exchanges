@@ -29,8 +29,8 @@ class CurrencyExchangeApplicationTests {
 	DeleteFromDatabase deleteFromDataBase;
 	@InjectMocks
 	ApiManager apiManager;
-	@InjectMocks
-	DatabaseManager databaseManager;
+//	@InjectMocks
+//	DatabaseManager databaseManager;
 
 
     @Test
@@ -51,10 +51,10 @@ class CurrencyExchangeApplicationTests {
 
 	@Test
 	void getFromApiTest(){
+		DatabaseManager databaseManager1 = new DatabaseManager();
 		deleteFromDataBase.deleteRow("2023-05-13","GBP", "USD");
-		ResponseEntity<Object> expected = databaseManager.getExchangeFromDateFromCurrAtCurr("2023-05-13","GBP", "USD");
-		System.out.println("body: "+expected);
-
+		ResponseEntity<Object> expected = databaseManager1.getExchangeFromDateFromCurrAtCurr("2023-05-13","GBP", "USD");
+		System.out.println("body: " + expected);
 	}
 }
 

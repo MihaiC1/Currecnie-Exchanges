@@ -21,4 +21,5 @@ public interface CurrenciesRepository extends JpaRepository<CurrenciesEntity,Int
      */
     @Query("select c from CurrenciesEntity c where curIsoCode = ?1")
     CurrenciesEntity getByISO(String ISO);
+
 }

@@ -52,7 +52,7 @@ public class ApiManager {
         HttpEntity<String> entity = new HttpEntity<>(requestBody,headers);
         String url = "https://api.rates-history-service.prd.aws.ofx.com/rate-history/api/1";
         ApiResponseBean response = restTemplate.postForObject(url,entity, ApiResponseBean.class);
-
+        System.out.println(response.getDataBean());
         if (response == null || response.getDataBean() == null){
 
             LOG.error("Something went wrong when sending a request to the API");

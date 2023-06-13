@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @EnableJpaRepositories(basePackages = "com.hcl.currencyexchange.repository")
 @RequestMapping(value = "/")
 @Scope("request")
+@CrossOrigin
 public class Controller {
 
     @Autowired

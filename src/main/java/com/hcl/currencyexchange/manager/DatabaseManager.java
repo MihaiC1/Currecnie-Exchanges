@@ -34,7 +34,6 @@ import java.util.Map;
  * @since 2023-05-18
  */
 @Service
-
 public class DatabaseManager extends ApiManager {
     @Autowired
     ExchangeRepository exchangeRepositoryObj;
